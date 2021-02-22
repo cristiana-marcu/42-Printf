@@ -6,7 +6,7 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/16 12:32:23 by cmarcu            #+#    #+#              #
-#    Updated: 2021/02/16 17:44:14 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/02/17 11:01:05 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,15 +28,15 @@ INCLUDES = printf.h
 
 all: $(NAME)
 
-$(NAME):
+$(NAME): $(OBJS)
 	@make re -C $(INCLUDE)
 	@$(CC) -g3 $(CFLAGS) $(SRCS) -I $(INCLUDES)
-	@ar rc $(NAME) $(OBJS) $(INCLUDE)/*.o
+	@ar rc $(NAME) $(OBJS) $(INCLUDE)/ft*.o
 	@ranlib $(NAME)
 
 clean:
 	$(RM) $(OBJS)
-	#make -C $(INCLUDE)
+	make -C $(INCLUDE)
 
 fclean:	clean
 	$(RM) $(NAME)
