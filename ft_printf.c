@@ -3,29 +3,88 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
+/*   By: user42 <user42@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/02/17 14:20:19 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/02/26 15:19:20 by user42           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
+
 int	ft_printf(char *str, ...)
 {
 	va_list vl;
-	int		printed;
-	void	*argu;
+	int		i;
+	t_format format;
 
 	va_start(vl, str);
-	printed = 0;
-	while (*str != '\0')
+	i = 0;
+	while (str[i] != '\0')
 	{
-		if (*str == '%')
+		if (str[i] == '%')
 		{
-			str++;
-			if (*str == 's')
+			ft_init_format(&format);
+			ft_check_formatters(vl, str, i, &format);
+			ft_get_length(vl, str, i);
+			ft_print_arg(vl, str, i);
+		}
+		write(1, &str[i], 1);
+		i++;
+	}
+	return (i);
+}
+
+void ft_init_format(t_format *format)
+{
+	format->flag_minus = 0;
+	format->flag_zero = 0;
+	format->width = 0;
+	format->precision = 1;
+	format->specifier = '\0';
+}
+
+void ft_get_flags(char *str, int i, t_format *format)
+{
+	if (str[i] == '-')
+	{
+		if (format->flag_zero == 1)
+			format->flag_zero == 0;
+		format->flag_minus = 1;
+		return ;
+	}
+	format->flag_zero = 1;
+}
+
+void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
+{
+	i++;
+	while (str[i] == '0' || str[i] == '-')
+	{
+		ft_get_flags(str, i, format);
+		i++;
+	}
+	if (ft_isdigit(str[i]) || str[i] == '*')
+	{
+		if (ft_isdigit(str[i]))
+			format->width = ft_atoi(str);
+		else
+			format->width = va_arg(vl, char *);
+	}
+	if (str[i] == '.')
+	{
+		i++;
+		if (ft_isdigit(str[i]))
+			format->precision = ft_atoi(str);
+		else
+			format->precision = va_arg(vl, char *);
+	}
+	if (ft_strchr(str[i], "scpdiuxX%"))
+		format->specifier = str[i];
+}
+
+/*if (*str == 's')
 			{
 				argu = (char *)argu;
 				argu = va_arg(vl, char *);
@@ -52,15 +111,4 @@ int	ft_printf(char *str, ...)
 				argu = va_arg(vl, void *);
 				ft_putnbr_fd(&argu, 0);
 				printed += 14;
-			}
-			str++;
-		}
-		else
-		{
-			write(1, str, 1);
-			str++;
-			printed++;
-		}
-	}
-	return (printed);
-}
+			}*/
