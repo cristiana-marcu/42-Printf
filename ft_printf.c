@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/06 13:05:34 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/06 17:13:05 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
 			format->width = ft_atoi(str);
 			//mover i tantos dígitos como tenga el resultado del atoi
 		else
-			format->width = va_arg(vl, char *);
+			format->width = va_arg(vl, int);
 	}
 	if (str[i] == '.')
 	{
@@ -83,7 +83,7 @@ void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
 			format->precision = ft_atoi(str);
 			//mover i tantos dígitos como tenga el resultado del atoi
 		else if (str[i] == '*')
-			format->precision = va_arg(vl, char *);
+			format->precision = va_arg(vl, int);
 		else
 			ft_error();
 	}
@@ -393,6 +393,21 @@ static void	ft_print_integer(va_list vl, t_format *format, int res_length)
 		write(1, "0", res_length - arg_length);
 		write(1, &str, arg_length);
 	}
+}
+
+void ft_print_unsigned(va_list vl, t_format *format, int res_length)
+{
+	write(1, "uns", 3);
+}
+
+void ft_print_hex(va_list vl, t_format *format, int res_length)
+{
+	write(1, "hex", 3);
+}
+
+void	ft_error()
+{
+	ft_putstr_fd("An error occured", 1);
 }
 
 /*if (*str == 's')
