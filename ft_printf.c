@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/04 13:29:11 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/06 13:05:34 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,6 +359,40 @@ static int	itoa_hex_length(unsigned long long int n)
 		n = n / 16;
 	}
 	return (length);
+}
+
+static void	ft_print_integer(va_list vl, t_format *format, int res_length)
+{
+	char	*str;
+	size_t	arg_length;
+
+	str = ft_itoa(va_arg(vl, int));
+	arg_length = ft_strlen(str);
+	if (format->precision < arg_length)
+		format->precision = arg_length;
+	if (res_length == arg_length)
+		write(1, &str, arg_length);
+	else if (format->precision >= format->width)
+	{
+		write(1, "0", format->precision - arg_length);
+		write(1, &str, arg_length);
+	}
+	else if (format->flag_minus)
+	{
+		write(1, &str, res_length);
+		write(1, " ", res_length - format->precision);
+	}
+	else if (format->precision > arg_length && format->flag_zero)
+	{
+		write(1, " ", res_length - format->precision);
+		write(1, "0", format->precision - arg_length);
+		write(1, &str, arg_length);
+	}
+	else
+	{
+		write(1, "0", res_length - arg_length);
+		write(1, &str, arg_length);
+	}
 }
 
 /*if (*str == 's')
