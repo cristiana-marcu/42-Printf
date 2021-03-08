@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/06 17:13:55 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/08 11:40:05 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,10 +20,10 @@
 
 typedef struct	s_format
 {
-	int			flag_minus;
-	int			flag_zero;
-	int			width;
-	int			precision;
+	size_t		flag_minus;
+	size_t		flag_zero;
+	size_t		width;
+	size_t		precision;
 	char		specifier;
 }				t_format;
 
@@ -49,9 +49,9 @@ void ft_print_pointer(va_list vl, t_format *format, size_t res_length);
 void	print_address(t_format *format, size_t res_length, char *str);
 
 char	*ft_itoa_hex(unsigned long long n);
-static int	itoa_hex_length(unsigned long long int n);
+int	itoa_hex_length(unsigned long long int n);
 
-static void	ft_print_integer(va_list vl, t_format *format, int res_length);
+void	ft_print_integer(va_list vl, t_format *format, int res_length);
 void ft_print_unsigned(va_list vl, t_format *format, int res_length);
 void ft_print_hex(va_list vl, t_format *format, int res_length);
 
