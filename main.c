@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/08 17:53:08 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/09 16:33:57 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,17 @@
 
 int	main()
 {
-	char *mystring = "ñaña";
+	char *mystring = "nono";
 	char mychar = 'Z';
-	int mynumber = -120;
+	//int mynumber = -120;
 	printf("-----------Mi resultado:----------\n");
-	ft_printf("Char:%c", mychar);
+	ft_printf("Char: %c", mychar);
 	printf("\n");
-	ft_printf("Number: %d", mynumber);
+	ft_printf("String: %s", mystring);
 	printf("\n");
 	printf("-----------Su resultado:----------\n");
-	printf("ya imprimo strings %c %s %p %d %x", mychar, mystring, mystring, mynumber, mynumber);
+	printf("Char: %c", mychar);
 	printf("\n");
-	printf("'%-5d'", mynumber);
+	printf("String: %s", mystring);
+	printf("\n");
 }

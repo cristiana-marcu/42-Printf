@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/08 18:01:03 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/09 16:23:52 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,15 +21,16 @@ int	ft_printf(char *str, ...)
 	size_t	res_length;
 
 	va_start(vl, str);
+	//printf("recogiendo vl %d\n", va_arg(vl, int));
 	i = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '%')
 		{
 			ft_init_format(&format);
-			ft_check_formatters(vl, str, i, &format);
-			res_length = ft_get_length(vl, &format);
-			ft_print_arg(vl, &format, res_length);
+			ft_check_formatters(&vl, str, i, &format);
+			res_length = ft_get_length(&vl, &format);
+			ft_print_arg(&vl, &format, res_length);
 			i += res_length;
 		}
 		write(1, &str[i], 1);
@@ -65,7 +66,7 @@ void ft_get_flags(char *str, int i, t_format *format)
 	}
 }
 
-void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
+void ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 {
 	i++;
 	while (str[i] == '0' || str[i] == '-')
@@ -79,7 +80,7 @@ void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
 			format->width = ft_atoi(str);
 			//mover i tantos dígitos como tenga el resultado del atoi
 		else
-			format->width = va_arg(vl, int);
+			format->width = va_arg(*vl, int);
 	}
 	if (str[i] == '.')
 	{
@@ -88,7 +89,7 @@ void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
 			format->precision = ft_atoi(str);
 			//mover i tantos dígitos como tenga el resultado del atoi
 		else if (str[i] == '*')
-			format->precision = va_arg(vl, int);
+			format->precision = va_arg(*vl, int);
 		else
 			ft_error();
 	}
@@ -98,7 +99,7 @@ void ft_check_formatters(va_list vl, char *str, int i, t_format *format)
 		ft_error();*/
 }
 
-size_t	ft_get_length(va_list vl, t_format *format)
+size_t	ft_get_length(va_list *vl, t_format *format)
 {
 	size_t res_length;
 
@@ -117,11 +118,11 @@ size_t	ft_get_length(va_list vl, t_format *format)
 	return (res_length);
 }
 
-size_t ft_get_string_length(va_list vl, t_format *format)
+size_t ft_get_string_length(va_list *vl, t_format *format)
 {
 	size_t res_length;
 
-	res_length = ft_strlen(va_arg(vl, char *));
+	res_length = ft_strlen(va_arg(*vl, char *));
 	if (format->precision > res_length)
 		res_length = format->precision;
 	else if (format->width > res_length)
@@ -166,12 +167,12 @@ size_t	ft_number_length(int n)
 	return (length);
 }
 
-size_t	ft_get_integer_length(va_list vl, t_format *format)
+size_t	ft_get_integer_length(va_list *vl, t_format *format)
 {
 	size_t length;
 	int number;
 
-	number = va_arg(vl, int);
+	number = va_arg(*vl, int);
 	length = ft_number_length(number);
 	if (format->precision < length)
 		format->precision = length;
@@ -200,12 +201,12 @@ size_t	ft_unsigned_number_length(unsigned int n)
 	return (length);
 }
 
-size_t	ft_get_unsigned_length(va_list vl, t_format *format)
+size_t	ft_get_unsigned_length(va_list *vl, t_format *format)
 {
 	size_t length;
 	unsigned int number;
 
-	number = va_arg(vl, unsigned int);
+	number = va_arg(*vl, unsigned int);
 	length = ft_unsigned_number_length(number);
 	if (format->precision < length)
 		format->precision = length;
@@ -216,7 +217,7 @@ size_t	ft_get_unsigned_length(va_list vl, t_format *format)
 	return (length);
 }
 
-void	ft_print_arg(va_list vl, t_format *format, size_t res_length)
+void	ft_print_arg(va_list *vl, t_format *format, size_t res_length)
 {
 	if (format->specifier == 's')
 		ft_print_string(vl, format, res_length);
@@ -232,12 +233,12 @@ void	ft_print_arg(va_list vl, t_format *format, size_t res_length)
 		ft_print_hex(vl, format, res_length);
 }
 
-void ft_print_string(va_list vl, t_format *format, size_t res_length)
+void ft_print_string(va_list *vl, t_format *format, size_t res_length)
 {
 	char	*toprint;
 	size_t	arg_length;
 
-	toprint = va_arg(vl, char *);
+	toprint = va_arg(*vl, char *);
 	arg_length = ft_strlen(toprint);
 	if (res_length <= arg_length)
 		write(1, &toprint, res_length);
@@ -264,11 +265,11 @@ void ft_print_string(va_list vl, t_format *format, size_t res_length)
 	}
 }
 
-void ft_print_char(va_list vl, t_format *format, size_t res_length)
+void ft_print_char(va_list *vl, t_format *format, size_t res_length)
 {
 	char	*toprint;
 
-	toprint = va_arg(vl, char *);
+	toprint = va_arg(*vl, char *);
 	if (res_length == 1)
 		write(1, &toprint, 1);
 	else
@@ -294,14 +295,14 @@ void ft_print_char(va_list vl, t_format *format, size_t res_length)
 	}
 }
 
-void ft_print_pointer(va_list vl, t_format *format, size_t res_length)
+void ft_print_pointer(va_list *vl, t_format *format, size_t res_length)
 {
 	void					*arg;
 	unsigned long long int	toprint;
 	char					*str;
 	size_t					arg_length;
 
-	arg = va_arg(vl, void *);
+	arg = va_arg(*vl, void *);
 	toprint = (unsigned long long int)&arg;
 	str = ft_itoa_hex(toprint);
 	arg_length = ft_strlen(str);
@@ -367,15 +368,15 @@ int	itoa_hex_length(unsigned long long int n)
 	return (length);
 }
 
-void	ft_print_integer(va_list vl, t_format *format, int res_length)
+void	ft_print_integer(va_list *vl, t_format *format, int res_length)
 {
 	char	*str;
 	size_t	arg_length;
 	int		integer;
 
-	integer = va_arg(vl, int);
-	printf("BUUUUUU %d", integer);
-	str = ft_itoa(va_arg(vl, int));
+	integer = va_arg(*vl, int);
+	//printf("recogiendo vl %d\n", integer);
+	str = ft_itoa(va_arg(*vl, int));
 	arg_length = ft_strlen(str);
 	if (format->precision < arg_length)
 		format->precision = arg_length;
@@ -404,14 +405,14 @@ void	ft_print_integer(va_list vl, t_format *format, int res_length)
 	}
 }
 
-void ft_print_unsigned(va_list vl, t_format *format, int res_length)
+void ft_print_unsigned(va_list *vl, t_format *format, int res_length)
 {
 	write(1, "uns", 3);
 
 	char	*str;
 	size_t	arg_length;
 
-	str = ft_itoa(va_arg(vl, int));
+	str = ft_itoa(va_arg(*vl, int));
 	arg_length = ft_strlen(str);
 	if (format->precision < arg_length)
 		format->precision = arg_length;
@@ -440,14 +441,14 @@ void ft_print_unsigned(va_list vl, t_format *format, int res_length)
 	}
 }
 
-void ft_print_hex(va_list vl, t_format *format, int res_length)
+void ft_print_hex(va_list *vl, t_format *format, int res_length)
 {
 	write(1, "hex", 3);
 
 	char	*str;
 	size_t	arg_length;
 
-	str = ft_itoa(va_arg(vl, int));
+	str = ft_itoa(va_arg(*vl, int));
 	arg_length = ft_strlen(str);
 	if (format->precision < arg_length)
 		format->precision = arg_length;
@@ -481,31 +482,3 @@ void	ft_error()
 	ft_putstr_fd("An error occured", 1);
 }
 
-/*if (*str == 's')
-			{
-				argu = (char *)argu;
-				argu = va_arg(vl, char *);
-				write(1, argu, ft_strlen(argu));
-				printed = printed + ft_strlen(argu);
-			}
-			else if (*str == 'c')
-			{
-				argu = (char *)argu;
-				argu = va_arg(vl, char *);
-				ft_putchar_fd(argu, 0);
-				printed++;
-			}
-			else if (*str == 'd' || *str == 'i')
-			{
-				argu = (int*)argu;
-				argu = va_arg(vl, int*);
-				ft_putnbr_fd((int)argu, 0);
-				printed += 14;
-			}
-			else if (*str == 'p')
-			{
-				argu = (void *)argu;
-				argu = va_arg(vl, void *);
-				ft_putnbr_fd(&argu, 0);
-				printed += 14;
-			}*/
