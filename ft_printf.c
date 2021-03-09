@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/09 16:23:52 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/09 17:50:39 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ int	ft_printf(char *str, ...)
 	size_t		i;
 	t_format format;
 	size_t	res_length;
+	char	*str_from_arg;
 
 	va_start(vl, str);
-	//printf("recogiendo vl %d\n", va_arg(vl, int));
 	i = 0;
 	while (str[i] != '\0')
 	{
