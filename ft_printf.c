@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/10 16:31:08 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/10 17:39:45 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -405,7 +405,8 @@ void	ft_print_integer(char *str_from_arg, t_format *format, int res_length)
 	}
 	else
 	{
-		ft_putnchar('0', res_length - arg_length);
+		ft_putnchar(' ', res_length - format->precision);
+		ft_putnchar('0', format->precision - arg_length);
 		write(1, str_from_arg, arg_length);
 	}
 }
