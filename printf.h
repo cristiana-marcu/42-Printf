@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/10 16:24:42 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/11 18:06:23 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,12 @@ typedef struct	s_format
 	char		specifier;
 }				t_format;
 
+typedef struct	s_lengths
+{
+	size_t		res_length;
+	size_t		arg_length;
+}				t_lengths;
+
 int	ft_printf(char *str, ...);
 
 void ft_init_format(t_format *format);
@@ -46,18 +52,19 @@ size_t	ft_get_unsigned_length(char *str_from_arg, t_format *format);
 
 void	ft_putnchar(char c, size_t n);
 
-void	ft_print_arg(char *str_from_arg, t_format *format, size_t res_length);
-void ft_print_string(char *str_from_arg, t_format *format, size_t res_length);
-void ft_print_char(char *str_from_arg, t_format *format, size_t res_length);
-void ft_print_pointer(char *str_from_arg, t_format *format, size_t res_length);
-void	print_address(t_format *format, size_t res_length, char *str);
+void	ft_print_arg(char *str_from_arg, t_format *format, t_lengths *lengths);
+void ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths);
+void ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths);
+void ft_print_pointer(char *str_from_arg, t_format *format, t_lengths *lengths);
+void	print_address(t_format *format, t_lengths *lengths, char *str);
 
 char	*ft_itoa_hex(unsigned long long n);
 int	itoa_hex_length(unsigned long long int n);
 
-void	ft_print_integer(char *str_from_arg, t_format *format, int res_length);
-void ft_print_unsigned(char *str_from_arg, t_format *format, int res_length);
-void ft_print_hex(char *str_from_arg, t_format *format, int res_length);
+void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths);
+void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths);
+void ft_print_unsigned(char *str_from_arg, t_format *format, t_lengths *lengths);
+void ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths);
 
 void	ft_error();
 

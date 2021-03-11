@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/10 17:39:45 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/11 18:37:05 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_printf(char *str, ...)
 	va_list vl;
 	int		i;
 	t_format format;
-	size_t	res_length;
+	t_lengths lengths;
 	char	*str_from_arg;
 
 	va_start(vl, str);
@@ -30,12 +30,16 @@ int	ft_printf(char *str, ...)
 			ft_init_format(&format);
 			i += ft_check_formatters(&vl, str, i, &format);
 			str_from_arg = ft_arg_to_string(&vl, &format);
-			res_length = ft_get_length(str_from_arg, &format);
-			ft_print_arg(str_from_arg, &format, res_length);
+			lengths.res_length = ft_get_length(str_from_arg, &format);
+			lengths.arg_length = ft_strlen(str_from_arg);
+			ft_print_arg(str_from_arg, &format, &lengths);
 			i++;
 		}
-		write(1, &str[i], 1);
-		i++;
+		if (str[i] != '\0')
+		{
+			write(1, &str[i], 1);
+			i++;
+		}
 	}
 	va_end(vl);
 	return (i);
@@ -130,7 +134,7 @@ int ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 		else
 			ft_error();
 	}
-	if (ft_strchr("scpdiuxX%", str[i]))
+	if (ft_strchr("scpdiux%X", str[i]))
 		format->specifier = str[i];
 	result++;
 	return (result);
@@ -224,20 +228,20 @@ size_t	ft_get_unsigned_length(char *str_from_arg, t_format *format)
 	return (length);
 }
 
-void	ft_print_arg(char *str_from_arg, t_format *format, size_t res_length)
+void	ft_print_arg(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
 	if (format->specifier == 's')
-		ft_print_string(str_from_arg, format, res_length);
+		ft_print_string(str_from_arg, format, lengths);
 	else if (format->specifier == 'c' || format->specifier == '%')
-		ft_print_char(str_from_arg, format, res_length);
+		ft_print_char(str_from_arg, format, lengths);
 	else if (format->specifier == 'p')
-		ft_print_pointer(str_from_arg, format, res_length);
+		ft_print_pointer(str_from_arg, format, lengths);
 	else if (format->specifier == 'd' || format->specifier == 'i')
-		ft_print_integer(str_from_arg, format, res_length);
+		ft_print_integer(str_from_arg, format, lengths);
 	else if (format->specifier == 'u')
-		ft_print_unsigned(str_from_arg, format, res_length);
+		ft_print_unsigned(str_from_arg, format, lengths);
 	else if (format->specifier == 'x' || format->specifier == 'X')
-		ft_print_hex(str_from_arg, format, res_length);
+		ft_print_hex(str_from_arg, format, lengths);
 }
 
 void	ft_putnchar(char c, size_t n)
@@ -254,92 +258,86 @@ void	ft_putnchar(char c, size_t n)
 	}
 }
 
-void ft_print_string(char *str_from_arg, t_format *format, size_t res_length)
+void ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	size_t	arg_length;
-
-	arg_length = ft_strlen(str_from_arg);
-	if (res_length <= arg_length)
-		write(1, str_from_arg, res_length);
+	if (lengths->res_length <= lengths->arg_length)
+		write(1, str_from_arg, lengths->res_length);
 	else
 	{
 		if (format->flag_minus == 1)
 		{
-			write(1, str_from_arg, arg_length);
-			ft_putnchar(' ', res_length - arg_length);
+			write(1, str_from_arg, lengths->arg_length);
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
 		}
 		else
 		{
 			if (format->flag_zero == 1)
 			{
-				ft_putnchar('0', res_length - arg_length);
-				write(1, str_from_arg, arg_length);
+				ft_putnchar('0', lengths->res_length - lengths->arg_length);
+				write(1, str_from_arg, lengths->arg_length);
 			}
 			else
 			{
-				ft_putnchar(' ', res_length - arg_length);
-				write(1, str_from_arg, arg_length);
+				ft_putnchar(' ', lengths->res_length - lengths->arg_length);
+				write(1, str_from_arg, lengths->arg_length);
 			}
 		}
 	}
 }
 
-void ft_print_char(char *str_from_arg, t_format *format, size_t res_length)
+void ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	if (res_length == 1)
+	if (lengths->res_length == 1)
 		write(1, str_from_arg, 1);
 	else
 	{
 		if (format->flag_minus == 1)
 		{
 			write(1, str_from_arg, 1);
-			ft_putnchar(' ', res_length - 1);
+			ft_putnchar(' ', lengths->res_length - 1);
 		}
 		else
 		{
 			if (format->flag_zero == 1)
 			{
-				ft_putnchar('0', res_length - 1);
+				ft_putnchar('0', lengths->res_length - 1);
 				write(1, str_from_arg, 1);
 			}
 			else
 			{
-				ft_putnchar(' ', res_length - 1);
+				ft_putnchar(' ', lengths->res_length - 1);
 				write(1, str_from_arg, 1);
 			}
 		}
 	}
 }
 
-void ft_print_pointer(char *str_from_arg, t_format *format, size_t res_length)
+void ft_print_pointer(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	size_t					arg_length;
-
-	arg_length = ft_strlen(str_from_arg);
-	if (res_length == arg_length)
-		write(1, str_from_arg, res_length);
+	if (lengths->res_length == lengths->arg_length)
+		write(1, str_from_arg, lengths->res_length);
 	else if (format->flag_minus)
 	{
-		print_address(format, res_length, str_from_arg);
-		ft_putnchar(' ', res_length - format->precision - arg_length);
+		print_address(format, lengths, str_from_arg);
+		ft_putnchar(' ', lengths->res_length - format->precision - lengths->arg_length);
 	}
 	else if (format->flag_zero)
 	{
-		ft_putnchar('0', res_length - format->precision - arg_length);
-		print_address(format, res_length, str_from_arg);
+		ft_putnchar('0', lengths->res_length - format->precision - lengths->arg_length);
+		print_address(format, lengths, str_from_arg);
 	}
 	else
 	{
-		ft_putnchar(' ', res_length - format->precision - arg_length);
-		print_address(format, res_length, str_from_arg);
+		ft_putnchar(' ', lengths->res_length - format->precision - lengths->arg_length);
+		print_address(format, lengths, str_from_arg);
 	}
 }
 
-void	print_address(t_format *format, size_t res_length, char *str)
+void	print_address(t_format *format, t_lengths *lengths, char *str)
 {
 	write(1, "0x", 2);
-	ft_putnchar('0', res_length - format->precision);
-	write (1, str, res_length);
+	ft_putnchar('0', lengths->res_length - format->precision);
+	write (1, str, lengths->res_length);
 }
 
 char	*ft_itoa_hex(unsigned long long n)
@@ -378,100 +376,134 @@ int	itoa_hex_length(unsigned long long int n)
 	return (length);
 }
 
-void	ft_print_integer(char *str_from_arg, t_format *format, int res_length)
+void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	size_t	arg_length;
-
-	arg_length = ft_strlen(str_from_arg);
-	if (format->precision < arg_length)
-		format->precision = arg_length;
-	if ((size_t)res_length == arg_length)
-		write(1, str_from_arg, arg_length);
-	else if (format->precision >= format->width)
-	{
-		ft_putnchar('0', format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
-	}
-	else if (format->flag_minus)
-	{
-		write(1, str_from_arg, res_length);
-		ft_putnchar(' ', res_length - format->precision);
-	}
-	else if (format->precision > arg_length && format->flag_zero)
-	{
-		ft_putnchar(' ', res_length - format->precision);
-		ft_putnchar('0', format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
-	}
+	if (str_from_arg[0] == '-')
+		ft_print_negative(str_from_arg, format, lengths);
 	else
 	{
-		ft_putnchar(' ', res_length - format->precision);
-		ft_putnchar('0', format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
+		if (format->precision < lengths->arg_length)
+			format->precision = lengths->arg_length;
+		if ((size_t)lengths->res_length == lengths->arg_length)
+			write(1, str_from_arg, lengths->arg_length);
+		else if (format->precision >= format->width)
+		{
+			ft_putnchar('0', format->precision - lengths->arg_length);
+			write(1, str_from_arg, lengths->arg_length);
+		}
+		else if (format->flag_minus)
+		{
+			ft_putnchar('0', format->precision - lengths->arg_length);
+			write(1, str_from_arg, lengths->arg_length);
+			ft_putnchar(' ', lengths->res_length - format->precision);
+		}
+		else if (format->precision > lengths->arg_length && format->flag_zero)
+		{
+			ft_putnchar(' ', lengths->res_length - format->precision);
+			ft_putnchar('0', format->precision - lengths->arg_length);
+			write(1, str_from_arg, lengths->arg_length);
+		}
+		else
+		{
+			ft_putnchar(' ', lengths->res_length - format->precision);
+			ft_putnchar('0', format->precision - lengths->arg_length);
+			write(1, str_from_arg, lengths->arg_length);
+		}
 	}
 }
 
-void ft_print_unsigned(char *str_from_arg, t_format *format, int res_length)
+void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	size_t	arg_length;
-
-	arg_length = ft_strlen(str_from_arg);
-	if (format->precision < arg_length)
-		format->precision = arg_length;
-	if ((size_t)res_length == arg_length)
-		write(1, str_from_arg, arg_length);
+	if (format->precision < lengths->arg_length - 1)
+		format->precision = lengths->arg_length;
+	if ((size_t)lengths->res_length == lengths->arg_length)
+		write(1, str_from_arg, lengths->arg_length);
 	else if (format->precision >= format->width)
 	{
-		write(1, "0", format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
+		write(1, "-", 1);
+		ft_putnchar('0', format->precision - lengths->arg_length + 1);
+		char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		write(1, substr, lengths->arg_length);
 	}
 	else if (format->flag_minus)
 	{
-		write(1, str_from_arg, res_length);
-		write(1, " ", res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
 	}
-	else if (format->precision > arg_length && format->flag_zero)
+	else if (format->precision > lengths->arg_length && format->flag_zero)
 	{
-		write(1, " ", res_length - format->precision);
-		write(1, "0", format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
 	}
 	else
 	{
-		write(1, "0", res_length - arg_length);
-		write(1, str_from_arg, arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
 	}
 }
 
-void ft_print_hex(char *str_from_arg, t_format *format, int res_length)
+void ft_print_unsigned(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	size_t	arg_length;
-
-	arg_length = ft_strlen(str_from_arg);
-	if (format->precision < arg_length)
-		format->precision = arg_length;
-	if ((size_t)res_length == arg_length)
-		write(1, str_from_arg, arg_length);
+	if (format->precision < lengths->arg_length)
+		format->precision = lengths->arg_length;
+	if ((size_t)lengths->res_length == lengths->arg_length)
+		write(1, str_from_arg, lengths->arg_length);
 	else if (format->precision >= format->width)
 	{
-		write(1, "0", format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
 	}
 	else if (format->flag_minus)
 	{
-		write(1, str_from_arg, res_length);
-		write(1, " ", res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
 	}
-	else if (format->precision > arg_length && format->flag_zero)
+	else if (format->precision > lengths->arg_length && format->flag_zero)
 	{
-		write(1, " ", res_length - format->precision);
-		write(1, "0", format->precision - arg_length);
-		write(1, str_from_arg, arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
 	}
 	else
 	{
-		write(1, "0", res_length - arg_length);
-		write(1, str_from_arg, arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
+	}
+}
+
+void ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths)
+{
+	if (format->precision < lengths->arg_length)
+		format->precision = lengths->arg_length;
+	if ((size_t)lengths->res_length == lengths->arg_length)
+		write(1, str_from_arg, lengths->arg_length);
+	else if (format->precision >= format->width)
+	{
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
+	}
+	else if (format->flag_minus)
+	{
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
+		ft_putnchar(' ', lengths->res_length - format->precision);
+	}
+	else if (format->precision > lengths->arg_length && format->flag_zero)
+	{
+		ft_putnchar(' ', lengths->res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
+	}
+	else
+	{
+		ft_putnchar(' ', lengths->res_length - format->precision);
+		ft_putnchar('0', format->precision - lengths->arg_length);
+		write(1, str_from_arg, lengths->arg_length);
 	}
 }
 

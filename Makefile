@@ -6,11 +6,11 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/16 12:32:23 by cmarcu            #+#    #+#              #
-#    Updated: 2021/02/17 11:01:05 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/03/11 13:31:58 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	=	ft_printf.c main.c ./libft/ft*.c
+SRCS	=	ft_printf.c main.c ./libft/*.c
 
 OBJS	=	$(SRCS:.c=.o)
 
@@ -24,7 +24,7 @@ AR	= ar rcs
 NAME	= libftprintf.a
 
 INCLUDE	= ./libft
-INCLUDES = printf.h
+INCLUDES	= printf.h
 
 all: $(NAME)
 
