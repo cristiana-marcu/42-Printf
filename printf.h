@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/15 16:54:48 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/16 13:24:29 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ int	ft_get_integer_length(char *str_from_arg, t_format *format);
 int	ft_unsigned_number_length(unsigned int n);
 int	ft_get_unsigned_length(char *str_from_arg, t_format *format);
 
-void	ft_putnchar(char c, size_t n);
+void	ft_putnchar(char c, int n);
 
 void	ft_print_arg(char *str_from_arg, t_format *format, t_lengths *lengths);
 void	ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths);

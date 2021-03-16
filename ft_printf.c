@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/15 18:03:26 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/16 20:00:34 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	ft_printf(char *str, ...)
 			ft_print_arg(str_from_arg, &format, &lengths);
 			//i++;
 		}
-		if (str[i] != '\0')
+		if (str[i] != '\0' && str[i] != '%')
 		{
 			write(1, &str[i], 1);
 			i++;
@@ -145,8 +145,11 @@ int ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 			i++;
 			result += 2;
 		}
-		/*else
-			ft_error();*/
+		else
+		{
+			format->precision = 0;
+			result++;
+		}
 	}
 	if (ft_strchr("scpdiux%X", str[i]))
 		format->specifier = str[i];
@@ -178,7 +181,9 @@ int ft_get_string_length(char *str_from_arg, t_format *format)
 	int res_length;
 
 	res_length = ft_strlen(str_from_arg);
-	if (format->precision > res_length)
+	if (format->width > format->precision)
+		res_length = format->width;
+	else if (format->precision < res_length && res_length != 0 && format->precision != 1)
 		res_length = format->precision;
 	else if (format->width > res_length)
 		res_length = format->width;
@@ -212,7 +217,9 @@ int	ft_get_integer_length(char *str_from_arg, t_format *format)
 	int length;
 
 	length = ft_strlen(str_from_arg);
-	if (format->precision < length)
+	if (format->precision == 0)
+		format->precision = 0 ;
+	else if (format->precision < length)
 		format->precision = length;
 	if (format->precision >= format->width)
 	{
@@ -256,9 +263,9 @@ void	ft_print_arg(char *str_from_arg, t_format *format, t_lengths *lengths)
 		ft_print_hex(str_from_arg, format, lengths);
 }
 
-void	ft_putnchar(char c, size_t n)
+void	ft_putnchar(char c, int n)
 {
-	size_t i;
+	int i;
 
 	i = 0;
 	if (n <= 0)
@@ -272,28 +279,24 @@ void	ft_putnchar(char c, size_t n)
 
 void ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
+	if (lengths->res_length < lengths->arg_length)
+		str_from_arg = ft_substr(str_from_arg, 0, (size_t)format->precision);
 	if (lengths->res_length <= lengths->arg_length)
 		ft_putstr_fd(str_from_arg, 1);
+	else if (format->flag_minus == 1)
+	{
+		ft_putstr_fd(str_from_arg, 1);
+		ft_putnchar(' ', lengths->res_length - lengths->arg_length);
+	}
+	else if (format->flag_zero)
+	{
+		ft_putnchar('0', lengths->res_length - lengths->arg_length);
+		ft_putstr_fd(str_from_arg, 1);
+	}
 	else
 	{
-		if (format->flag_minus == 1)
-		{
-			write(1, str_from_arg, lengths->arg_length);
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-		}
-		else
-		{
-			if (format->flag_zero)
-			{
-				ft_putnchar('0', lengths->res_length - lengths->arg_length);
-				ft_putstr_fd(str_from_arg, 1);
-			}
-			else
-			{
-				ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-				ft_putstr_fd(str_from_arg, 1);
-			}
-		}
+		ft_putnchar(' ', lengths->res_length - lengths->arg_length);
+		ft_putstr_fd(str_from_arg, 1);
 	}
 }
 
@@ -398,6 +401,8 @@ void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths)
 			format->precision = lengths->arg_length;*/
 		if (lengths->res_length == lengths->arg_length)
 			ft_putstr_fd(str_from_arg, 1);
+		else if (format->precision == 0)
+			ft_putnchar(' ', lengths->res_length);
 		else if (format->precision >= format->width)
 		{
 			ft_putnchar('0', format->precision - lengths->arg_length);
