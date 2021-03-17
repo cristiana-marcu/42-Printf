@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/16 13:24:29 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/17 16:28:06 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ typedef struct	s_format
 	int			width;
 	int			precision;
 	char		specifier;
+	size_t		p_has_changed;
 }				t_format;
 
 typedef struct	s_lengths
@@ -41,6 +42,8 @@ void	ft_init_lengths(t_lengths *lengths, char *str_from_arg, t_format *format);
 void	ft_get_flags(char *str, int i, t_format *format);
 int		ft_check_formatters(va_list *vl, char *str, int i, t_format *format);
 char	*ft_arg_to_string(va_list *vl, t_format *format);
+char	*ft_handle_chars(va_list *vl);
+char	*ft_strtoupper(char *str_from_arg);
 
 int	ft_get_length(char *str_from_arg, t_format *format);
 int	ft_get_string_length(char *str_from_arg, t_format *format);
