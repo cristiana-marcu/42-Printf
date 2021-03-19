@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/18 17:54:58 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/19 15:39:15 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,14 +28,14 @@ int	main()
 	//ft_printf("\n");
 	//ft_printf("Chars: %c", '1');
 	//ft_printf("Pointer: %-32p%-32p", &a01, &a02);
-	ft_printf("hello, %5.0uhi", 0);
+	ft_printf("Pointer: %% *.5i 42 == |% *.5i|", 4, 42);
 	ft_printf("\n");
 	ft_printf("-----------Official----------\n");
 	//printf("Char: %c", mychar);
 	//ft_printf("\n");
 	//printf("String: %s", mystring);
 	//printf("\n");
-	//printf("Pointer: %-32p%-32p", &a01, &a02);
-	printf("hello, %5.0uhi", 0);
+	printf("Pointer: %% *.5i 42 == |% *.5i|", 4, 42);
+	//printf("hello, %5p", 0);
 	printf("\n");
 }
