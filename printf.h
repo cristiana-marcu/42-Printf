@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/18 17:47:20 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/19 17:30:37 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,5 @@ void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths);
 void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths);
 void	ft_print_unsigned(char *str_from_arg, t_format *format, t_lengths *lengths);
 void	ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths);
-
-void	ft_error();
 
 #endif

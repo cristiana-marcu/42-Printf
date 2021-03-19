@@ -6,20 +6,19 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/19 15:44:59 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/19 17:33:42 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "printf.h"
 
-
-int	ft_printf(char *str, ...)
+int		ft_printf(char *str, ...)
 {
-	va_list vl;
-	int		i;
-	t_format format;
-	t_lengths lengths;
-	char	*str_from_arg;
+	va_list		vl;
+	int			i;
+	t_format	format;
+	t_lengths	lengths;
+	char		*str_from_arg;
 
 	va_start(vl, str);
 	i = 0;
@@ -32,7 +31,6 @@ int	ft_printf(char *str, ...)
 			str_from_arg = ft_arg_to_string(&vl, &format);
 			ft_init_lengths(&lengths, str_from_arg, &format);
 			ft_print_arg(str_from_arg, &format, &lengths);
-			//i++;
 		}
 		if (str[i] != '\0' && str[i] != '%')
 		{
@@ -71,7 +69,8 @@ char	*ft_arg_to_string(va_list *vl, t_format *format)
 	else if (format->specifier == 'x')
 		str_from_arg = ft_itoa_base(va_arg(*vl, unsigned int), 16);
 	else if (format->specifier == 'X')
-		str_from_arg = ft_strtoupper(ft_itoa_base(va_arg(*vl, unsigned int), 16));
+		str_from_arg =
+		ft_strtoupper(ft_itoa_base(va_arg(*vl, unsigned int), 16));
 	else
 		str_from_arg = "";
 	return (str_from_arg);
@@ -103,7 +102,7 @@ char	*ft_handle_chars(va_list *vl)
 	return (str);
 }
 
-void ft_init_format(t_format *format)
+void	ft_init_format(t_format *format)
 {
 	format->flag_minus = 0;
 	format->flag_zero = 0;
@@ -113,13 +112,14 @@ void ft_init_format(t_format *format)
 	format->p_has_changed = 0;
 }
 
-void	ft_init_lengths(t_lengths *lengths, char *str_from_arg, t_format *format)
+void	ft_init_lengths(t_lengths *lengths, char *str_from_arg,
+t_format *format)
 {
 	lengths->arg_length = (int)ft_strlen(str_from_arg);
 	lengths->res_length = ft_get_length(str_from_arg, format);
 }
 
-void ft_get_flags(char *str, int i, t_format *format)
+void	ft_get_flags(char *str, int i, t_format *format)
 {
 	if (str[i] == '-')
 	{
@@ -136,7 +136,7 @@ void ft_get_flags(char *str, int i, t_format *format)
 	}
 }
 
-int ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
+int		ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 {
 	int result;
 
@@ -203,7 +203,7 @@ int ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 	return (result);
 }
 
-int	ft_get_length(char *str_from_arg, t_format *format)
+int		ft_get_length(char *str_from_arg, t_format *format)
 {
 	int res_length;
 
@@ -222,7 +222,7 @@ int	ft_get_length(char *str_from_arg, t_format *format)
 	return (res_length);
 }
 
-int ft_get_string_length(char *str_from_arg, t_format *format)
+int		ft_get_string_length(char *str_from_arg, t_format *format)
 {
 	int res_length;
 
@@ -234,16 +234,18 @@ int ft_get_string_length(char *str_from_arg, t_format *format)
 	}
 	if (format->precision < 0)
 		format->precision = res_length;
-	if (format->width > format->precision && format->width > res_length && format->precision >= res_length)
+	if (format->width > format->precision && format->width > res_length &&
+	format->precision >= res_length)
 		res_length = format->width;
-	else if (format->precision < res_length && res_length != 0 && format->p_has_changed)
+	else if (format->precision < res_length && res_length != 0 &&
+	format->p_has_changed)
 		res_length = format->precision;
 	else if (format->width > res_length)
 		res_length = format->width;
 	return (res_length);
 }
 
-int ft_get_char_length(t_format *format)
+int		ft_get_char_length(t_format *format)
 {
 	int res_length;
 
@@ -253,7 +255,7 @@ int ft_get_char_length(t_format *format)
 	return (res_length);
 }
 
-int	ft_get_pointer_length(t_format *format, char *str_from_arg)
+int		ft_get_pointer_length(t_format *format, char *str_from_arg)
 {
 	int res_length;
 
@@ -267,7 +269,7 @@ int	ft_get_pointer_length(t_format *format, char *str_from_arg)
 	return (res_length);
 }
 
-int	ft_get_integer_length(char *str_from_arg, t_format *format)
+int		ft_get_integer_length(char *str_from_arg, t_format *format)
 {
 	int length;
 
@@ -293,7 +295,7 @@ int	ft_get_integer_length(char *str_from_arg, t_format *format)
 	return (length);
 }
 
-int	ft_get_unsigned_length(char *str_from_arg, t_format *format)
+int		ft_get_unsigned_length(char *str_from_arg, t_format *format)
 {
 	int length;
 
@@ -339,11 +341,13 @@ void	ft_putnchar(char c, int n)
 	}
 }
 
-void ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_string(char *str_from_arg, t_format *format,
+t_lengths *lengths)
 {
 	if (lengths->res_length < lengths->arg_length)
 		str_from_arg = ft_substr(str_from_arg, 0, (size_t)format->precision);
-	if (lengths->res_length <= lengths->arg_length && format->width <= lengths->res_length)
+	if (lengths->res_length <= lengths->arg_length &&
+	format->width <= lengths->res_length)
 		ft_putstr_fd(str_from_arg, 1);
 	else if (format->flag_minus == 1)
 	{
@@ -358,7 +362,8 @@ void ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths)
 		ft_putnchar('0', lengths->res_length - lengths->arg_length);
 		ft_putstr_fd(str_from_arg, 1);
 	}
-	else if (format->width > format->precision && lengths->arg_length > lengths->res_length)
+	else if (format->width > format->precision &&
+	lengths->arg_length > lengths->res_length)
 	{
 		ft_putnchar(' ', format->width - format->precision);
 		ft_putstr_fd(str_from_arg, 1);
@@ -370,7 +375,7 @@ void ft_print_string(char *str_from_arg, t_format *format, t_lengths *lengths)
 	}
 }
 
-void ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
 	if (lengths->res_length == 1)
 		write(1, str_from_arg, 1);
@@ -397,7 +402,8 @@ void ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
 	}
 }
 
-void ft_print_pointer(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_pointer(char *str_from_arg, t_format *format,
+t_lengths *lengths)
 {
 	if (str_from_arg == NULL)
 		write(1, "0x0", 3);
@@ -410,7 +416,8 @@ void ft_print_pointer(char *str_from_arg, t_format *format, t_lengths *lengths)
 	}
 	else if (format->flag_zero)
 	{
-		ft_putnchar('0', lengths->res_length - format->precision - lengths->arg_length);
+		ft_putnchar('0', lengths->res_length - format->precision -
+		lengths->arg_length);
 		print_address(format, lengths, str_from_arg);
 	}
 	else
@@ -454,7 +461,7 @@ char	*ft_itoa_base(unsigned long long n, unsigned long long base)
 	return (str);
 }
 
-int	itoa_base_length(unsigned long long n, unsigned long long base)
+int		itoa_base_length(unsigned long long n, unsigned long long base)
 {
 	int length;
 
@@ -469,14 +476,13 @@ int	itoa_base_length(unsigned long long n, unsigned long long base)
 	return (length);
 }
 
-void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_integer(char *str_from_arg, t_format *format,
+t_lengths *lengths)
 {
 	if (str_from_arg[0] == '-')
 		ft_print_negative(str_from_arg, format, lengths);
 	else
 	{
-		/*if (format->precision < lengths->arg_length)
-			format->precision = lengths->arg_length;*/
 		if (lengths->res_length == lengths->arg_length)
 			ft_putstr_fd(str_from_arg, 1);
 		else if (format->precision == 0)
@@ -500,7 +506,8 @@ void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths)
 		}
 		else if (format->width > lengths->arg_length && format->flag_zero)
 		{
-			if (format->precision <= lengths->arg_length && format->p_has_changed)
+			if (format->precision <= lengths->arg_length &&
+			format->p_has_changed)
 			{
 				ft_putnchar(' ', format->width - lengths->arg_length);
 				ft_putstr_fd(str_from_arg, 1);
@@ -520,21 +527,27 @@ void	ft_print_integer(char *str_from_arg, t_format *format, t_lengths *lengths)
 	}
 }
 
-void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_negative(char *str_from_arg, t_format *format,
+t_lengths *lengths)
 {
-	if (format->precision < lengths->arg_length - 1 && format->precision >= format->width)
+	char *substr;
+
+	if (format->precision < lengths->arg_length - 1 &&
+	format->precision >= format->width)
 		format->precision = lengths->arg_length;
-	if (format->precision == lengths->arg_length + 1 && format->precision < format->width)
+	if (format->precision == lengths->arg_length + 1 &&
+	format->precision < format->width)
 		format->precision = lengths->arg_length + 1;
 	if (lengths->res_length == lengths->arg_length)
 		write(1, str_from_arg, lengths->arg_length);
-	else if ((format->precision == lengths->arg_length && format->width < format->precision) || format->width == lengths->arg_length)
+	else if ((format->precision == lengths->arg_length &&
+	format->width < format->precision) || format->width == lengths->arg_length)
 		write(1, str_from_arg, lengths->arg_length);
 	else if (format->precision > format->width)
 	{
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 		ft_putstr_fd(substr, 1);
 	}
 	else if (format->flag_minus)
@@ -542,7 +555,7 @@ void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths)
 		write(1, "-", 1);
 		if (format->precision > lengths->arg_length)
 			ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 		ft_putstr_fd(substr, 1);
 		if (format->precision > lengths->arg_length)
 			ft_putnchar(' ', lengths->res_length - format->precision - 1);
@@ -554,15 +567,16 @@ void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths)
 		ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 		ft_putstr_fd(substr, 1);
 	}
-	else if (format->width > format->precision && format->p_has_changed && format->precision > lengths->arg_length)
+	else if (format->width > format->precision && format->p_has_changed &&
+	format->precision > lengths->arg_length)
 	{
 		ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 		ft_putstr_fd(substr, 1);
 	}
 	else if (format->width > lengths->arg_length && format->flag_zero)
@@ -572,23 +586,24 @@ void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths)
 			ft_putnchar(' ', lengths->res_length - format->precision);
 			write(1, "-", 1);
 			ft_putnchar('0', format->precision - lengths->arg_length);
-			char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+			substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 			ft_putstr_fd(substr, 1);
 		}
 		else
 		{
 			write(1, "-", 1);
 			ft_putnchar('0', format->width - lengths->arg_length);
-			char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+			substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 			ft_putstr_fd(substr, 1);
 		}
 	}
-	else if (format->width > format->precision && format->precision > lengths->arg_length)
+	else if (format->width > format->precision &&
+	format->precision > lengths->arg_length)
 	{
 		ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		char *substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
 		ft_putstr_fd(substr, 1);
 	}
 	else
@@ -599,10 +614,11 @@ void	ft_print_negative(char *str_from_arg, t_format *format, t_lengths *lengths)
 	}
 }
 
-void ft_print_unsigned(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_unsigned(char *str_from_arg, t_format *format,
+t_lengths *lengths)
 {
 	if (lengths->res_length == lengths->arg_length)
-			ft_putstr_fd(str_from_arg, 1);
+		ft_putstr_fd(str_from_arg, 1);
 	else if (format->precision == 0)
 		ft_putnchar(' ', lengths->res_length);
 	else if (format->precision >= format->width)
@@ -616,7 +632,8 @@ void ft_print_unsigned(char *str_from_arg, t_format *format, t_lengths *lengths)
 		ft_putstr_fd(str_from_arg, 1);
 		ft_putnchar(' ', lengths->res_length - format->precision);
 	}
-	else if (format->precision > lengths->arg_length && format->flag_zero && format->p_has_changed)
+	else if (format->precision > lengths->arg_length && format->flag_zero &&
+	format->p_has_changed)
 	{
 		ft_putnchar(' ', lengths->res_length - format->precision);
 		ft_putnchar('0', format->precision - lengths->arg_length);
@@ -643,12 +660,12 @@ void ft_print_unsigned(char *str_from_arg, t_format *format, t_lengths *lengths)
 	}
 }
 
-void ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths)
+void	ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
 	if (format->precision < lengths->arg_length)
 		format->precision = lengths->arg_length;
 	if (lengths->res_length == lengths->arg_length)
-			ft_putstr_fd(str_from_arg, 1);
+		ft_putstr_fd(str_from_arg, 1);
 	else if (format->precision == 0)
 		ft_putnchar(' ', lengths->res_length);
 	else if (format->precision >= format->width)
@@ -662,7 +679,8 @@ void ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths)
 		ft_putstr_fd(str_from_arg, 1);
 		ft_putnchar(' ', lengths->res_length - format->precision);
 	}
-	else if (format->precision > lengths->arg_length && format->flag_zero && format->p_has_changed)
+	else if (format->precision > lengths->arg_length && format->flag_zero &&
+	format->p_has_changed)
 	{
 		ft_putnchar(' ', lengths->res_length - format->precision);
 		ft_putnchar('0', format->precision - lengths->arg_length);
@@ -687,9 +705,4 @@ void ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths)
 		ft_putnchar('0', format->precision - lengths->arg_length);
 		ft_putstr_fd(str_from_arg, 1);
 	}
-}
-
-void	ft_error()
-{
-	ft_putstr_fd("An error occured", 1);
 }
