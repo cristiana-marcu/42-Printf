@@ -6,13 +6,13 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/19 17:10:40 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/20 13:23:48 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdio.h>
 #include <limits.h>
-#include "printf.h"
+#include "ft_printf.h"
 
 int	main()
 {
@@ -22,23 +22,34 @@ int	main()
 	//char *mystring = "nono";
 	//char mychar = '%';
 	//int mynumber = -120;
-	ft_printf("-----------Mine--------------\n");
+	//ft_printf("-----------Mine--------------\n");
 	//ft_printf("Char: %c", mychar);
 	//ft_printf("\n");
 	///ft_printf("String: %s", mystring);
 	//ft_printf("\n");
 	//ft_printf("Chars: %c", '1');
 	//ft_printf("Pointer: %-32p%-32p", &a01, &a02);
-	ft_printf("Pointer: %% *.5i 42 == |% *.5i|", 4, 42);
-	ft_printf("\n");
-	ft_printf("-----------Official----------\n");
+	//ft_printf("Pointer: %% *.5i 42 == |% *.5i|", 4, 42);
+	//ft_printf("\n");
+	//ft_printf("-----------Official----------\n");
 	//printf("Char: %c", mychar);
 	//ft_printf("\n");
 	//printf("String: %s", mystring);
 	//printf("\n");
-	printf("Pointer: %% *.5i 42 == |% *.5i|", 4, 42);
+	//printf("Pointer: %% *.5i 42 == |% *.5i|", 4, 42);
 	//printf("hello, %5p", 0);
-	printf("\n");
+	//printf("\n");
+
+	int		i;
+	int		j;
+	i = printf("ft: jaja[%30.10s] [%.3s] [%.30s] [%20s] [%30.10d] [%30d %.10d] [%30.10d] [%5.0d] [%30.10x] [%30x] [%.10x] [%30.10x] [%5.0x]\n", "jaime que", "jaime", "jaime", "jaime", 30, 30 , 303030, -303030, 0, 30, 30 , 303030, -303030, 0);
+	printf("ft: %d\n", i);
+	i = ft_printf("sy: jaja[%30.10s] [%.3s] [%.30s] [%20s] [%30.10d] [%30d %.10d] [%30.10d] [%5.0d] [%30.10x] [%30x] [%.10x] [%30.10x] [%5.0x]\n", "jaime que", "jaime", "jaime", "jaime", 30, 30 , 303030, -303030, 0, 30, 30 , 303030, -303030, 0);
+	printf("sy: %d\n", i);
+	i = printf("[%6ld], [%10.3s]\n", -2147483648, "");
+	printf("ft: %d\n", i);
+	j = ft_printf("[%6d], [%10.3s]\n", -2147483648, "");
+	printf("sy: %d\n", j);
 }
 
 

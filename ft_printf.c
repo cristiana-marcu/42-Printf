@@ -6,11 +6,11 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/19 17:33:42 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/20 15:36:57 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "printf.h"
+#include "ft_printf.h"
 
 int		ft_printf(char *str, ...)
 {
@@ -19,9 +19,11 @@ int		ft_printf(char *str, ...)
 	t_format	format;
 	t_lengths	lengths;
 	char		*str_from_arg;
+	int			result;
 
 	va_start(vl, str);
 	i = 0;
+	result = 0;
 	while (str[i] != '\0')
 	{
 		if (str[i] == '%')
@@ -31,15 +33,17 @@ int		ft_printf(char *str, ...)
 			str_from_arg = ft_arg_to_string(&vl, &format);
 			ft_init_lengths(&lengths, str_from_arg, &format);
 			ft_print_arg(str_from_arg, &format, &lengths);
+			result += lengths.res_length;
 		}
 		if (str[i] != '\0' && str[i] != '%')
 		{
 			write(1, &str[i], 1);
 			i++;
+			result++;
 		}
 	}
 	va_end(vl);
-	return (i);
+	return (result);
 }
 
 char	*ft_arg_to_string(va_list *vl, t_format *format)
@@ -284,12 +288,7 @@ int		ft_get_integer_length(char *str_from_arg, t_format *format)
 	else if (format->precision < length)
 		format->precision = length;
 	if (format->precision >= format->width)
-	{
-		if (str_from_arg[0] == '-')
-			length = format->precision + 1;
-		else
-			length = format->precision;
-	}
+		length = format->precision;
 	else if (format->width > length)
 		length = format->width;
 	return (length);
