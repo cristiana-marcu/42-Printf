@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/23 18:25:48 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/23 19:26:14 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,7 +156,7 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 	{
 		if (ft_isdigit(str[i]))
 		{
-			format->width = ft_atoi(ft_substr(str, i, 10));
+			format->width = ft_atoi(str + i);
 			i += ft_strlen(ft_itoa(format->width));
 			result += ft_strlen(ft_itoa(format->width));
 		}
@@ -178,7 +178,7 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 				i++;
 			}
 			else
-				format->precision = ft_atoi(ft_substr(str, i, 10));
+				format->precision = ft_atoi(str + i);
 			while (str[i] == '0')
 			{
 				result++;
@@ -396,6 +396,7 @@ t_lengths *lengths)
 			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
 		ft_putstr_fd(str_from_arg, 1);
 	}
+	//free(str_from_arg);
 }
 
 void	ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
@@ -422,6 +423,7 @@ void	ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
 				write(1, str_from_arg, 1);
 			}
 		}
+		//free(str_from_arg);
 	}
 }
 
@@ -569,7 +571,7 @@ t_lengths *lengths)
 	{
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = str_from_arg + 1;
 		ft_putstr_fd(substr, 1);
 	}
 	else if ((format->precision == lengths->arg_length && format->width
@@ -580,7 +582,7 @@ t_lengths *lengths)
 		write(1, "-", 1);
 		if (format->precision > lengths->arg_length)
 			ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = str_from_arg + 1;
 		ft_putstr_fd(substr, 1);
 		if (format->precision > lengths->arg_length)
 			ft_putnchar(' ', lengths->res_length - format->precision - 1);
@@ -592,7 +594,7 @@ t_lengths *lengths)
 		ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = str_from_arg + 1;
 		ft_putstr_fd(substr, 1);
 	}
 	else if (format->width > format->precision && format->p_has_changed
@@ -601,7 +603,7 @@ t_lengths *lengths)
 		ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = str_from_arg + 1;
 		ft_putstr_fd(substr, 1);
 	}
 	else if (format->width > lengths->arg_length && format->flag_zero)
@@ -611,14 +613,14 @@ t_lengths *lengths)
 			ft_putnchar(' ', lengths->res_length - format->precision);
 			write(1, "-", 1);
 			ft_putnchar('0', format->precision - lengths->arg_length);
-			substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+			substr = str_from_arg + 1;
 			ft_putstr_fd(substr, 1);
 		}
 		else
 		{
 			write(1, "-", 1);
 			ft_putnchar('0', format->width - lengths->arg_length);
-			substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+			substr = str_from_arg + 1;
 			ft_putstr_fd(substr, 1);
 		}
 	}
@@ -628,7 +630,7 @@ t_lengths *lengths)
 		ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		write(1, "-", 1);
 		ft_putnchar('0', format->precision - lengths->arg_length + 1);
-		substr = ft_substr(str_from_arg, 1, lengths->arg_length - 1);
+		substr = str_from_arg + 1;
 		ft_putstr_fd(substr, 1);
 	}
 	else
