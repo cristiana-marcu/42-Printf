@@ -6,7 +6,7 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/16 12:32:23 by cmarcu            #+#    #+#              #
-#    Updated: 2021/03/20 13:26:02 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/03/22 11:31:44 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -44,4 +44,4 @@ try: $(NAME)
 
 re:	fclean $(NAME)
 
-.PHONY:	all clean fclean re
+.PHONY:	all clean fclean re try

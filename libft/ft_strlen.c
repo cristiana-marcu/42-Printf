@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/12/02 13:10:27 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/09 16:34:57 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/22 14:09:42 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 size_t	ft_strlen(const char *str)
 {
-	size_t result;
+	size_t	result;
 
 	result = 0;
 	while (*str != '\0')

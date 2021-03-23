@@ -6,14 +6,14 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 10:46:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/01/29 12:43:17 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/22 12:35:57 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
 void
-	*ft_memccpy(void *restrict dst, const void *restrict src, int c, size_t n)
+	*ft_memccpy(void *dst, const void *src, int c, size_t n)
 {
 	char	*srcchar;
 	char	*dstchar;

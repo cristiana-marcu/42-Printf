@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:46:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/08 17:11:31 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/22 15:32:29 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	itoa_length(int n)
 {
-	int length;
+	int	length;
 
 	length = 0;
 	if (n < 0)
@@ -29,13 +29,20 @@ static int	itoa_length(int n)
 	return (length);
 }
 
-char		*ft_itoa(int n)
+static void	ft_if_zero(int n, char *str)
+{
+	if (n == 0)
+		str[0] = '0';
+}
+
+char	*ft_itoa(int n)
 {
 	char	*str;
 	int		length;
 
 	length = itoa_length(n);
-	if (!(str = (char *)malloc(sizeof(*str) * (length + 1))))
+	str = (char *)malloc(sizeof(*str) * (length + 1));
+	if (!str)
 		return (NULL);
 	str[length] = '\0';
 	if (n < 0)
@@ -48,8 +55,7 @@ char		*ft_itoa(int n)
 		}
 		n = -n;
 	}
-	if (n == 0)
-		str[0] = '0';
+	ft_if_zero(n, str);
 	while (length >= 0 && n != 0)
 	{
 		str[length-- - 1] = (n % 10) + '0';

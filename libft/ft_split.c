@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/22 16:43:13 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/02/05 09:48:55 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/22 15:22:25 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static char	**ft_mountarray(char const *s, char c)
 	char	**array;
 
 	result = 0;
-	aux = (char*)s;
+	aux = (char *)s;
 	while (*aux)
 	{
 		while (*aux == c)
@@ -29,21 +29,17 @@ static char	**ft_mountarray(char const *s, char c)
 		while (*aux && *aux != c)
 			aux++;
 	}
-	if (!(array = (char **)malloc((result + 1) * sizeof(char *))))
+	array = (char **)malloc((result + 1) * sizeof(char *));
+	if (!array)
 		return (NULL);
 	return (array);
 }
 
-char		**ft_split(char const *s, char c)
+static char	**ft_fill_array(char const *s, char **array, char c)
 {
-	char	**array;
 	size_t	i;
 	size_t	j;
 
-	if (!s)
-		return (NULL);
-	if (!(array = ft_mountarray(s, c)))
-		return (NULL);
 	i = 0;
 	j = 0;
 	while (*s)
@@ -61,4 +57,16 @@ char		**ft_split(char const *s, char c)
 	}
 	array[i] = NULL;
 	return (array);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**array;
+
+	if (!s)
+		return (NULL);
+	array = ft_mountarray(s, c);
+	if (!array)
+		return (NULL);
+	return (ft_fill_array(s, array, c));
 }
