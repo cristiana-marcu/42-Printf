@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/24 11:16:36 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/24 18:36:58 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ int	ft_printf(const char *str, ...)
 		{
 			ft_init_format(&format);
 			i += ft_check_formatters(&vl, (char *)str, i, &format);
+			str_from_arg = NULL;
 			str_from_arg = ft_arg_to_string(&vl, &format);
 			ft_init_lengths(&lengths, str_from_arg, &format);
 			ft_print_arg(str_from_arg, &format, &lengths);
@@ -516,6 +517,7 @@ char	*ft_itoa_base(unsigned long long n, unsigned long long base)
 	str = (char *)malloc(sizeof(*str) * (length + 1));
 	if (!str)
 		return (NULL);
+	str[length] = '\0';
 	while (n != 0)
 	{
 		remainder = n % base;
@@ -552,9 +554,20 @@ t_lengths *lengths)
 	{
 		if (lengths->res_length == lengths->arg_length)
 			ft_putstr_fd(str_from_arg, 1);
-		else if (format->precision == 0)
-			ft_putnchar(' ', lengths->res_length);
-		else if (format->precision >= format->width)
+		else if (format->precision == 0 && format->flag_minus
+			&& str_from_arg[0] != '0')
+		{
+			ft_putstr_fd(str_from_arg, 1);
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
+		}
+		else if (format->precision == 0 && str_from_arg[0] != '0')
+		{
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
+			ft_putstr_fd(str_from_arg, 1);
+		}
+		else if (format->precision == 0 && str_from_arg[0] == '0')
+			ft_putnchar(' ', format->width);
+		else if (format->precision >= format->width && format->precision != 0)
 		{
 			ft_putnchar('0', format->precision - lengths->arg_length);
 			ft_putstr_fd(str_from_arg, 1);
@@ -599,12 +612,6 @@ t_lengths *lengths)
 {
 	char	*substr;
 
-	if (format->precision < lengths->arg_length - 1
-		&& format->precision >= format->width)
-		format->precision = lengths->arg_length;
-	if (format->precision == lengths->arg_length + 1
-		&& format->precision < format->width)
-		format->precision = lengths->arg_length + 1;
 	if (lengths->res_length == lengths->arg_length && !format->p_has_changed)
 		write(1, str_from_arg, lengths->arg_length);
 	else if (format->precision >= format->width
@@ -628,7 +635,7 @@ t_lengths *lengths)
 		if (format->precision > lengths->arg_length)
 			ft_putnchar(' ', lengths->res_length - format->precision - 1);
 		else
-			ft_putnchar(' ', lengths->res_length - format->precision);
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
 	}
 	else if (format->precision > lengths->arg_length && format->flag_zero)
 	{

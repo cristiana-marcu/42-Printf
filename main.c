@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/23 20:02:17 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/24 18:41:39 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,17 +23,27 @@ int	main()
 	//char mychar = '%';
 	//int mynumber = -120;
 
-	int		mine;
-	int		official;
-	mine = ft_printf("String:  %1s %1s ", "123", "4567");
-	printf("\n");
-	official = printf("String:  %1s %1s ", "123", "4567");
-	printf("\n");
+	// int		mine;
+	// int		official;
+	// mine = ft_printf("String:  %1s %1s ", "123", "4567");
+	// printf("\n");
+	// official = printf("String:  %1s %1s ", "123", "4567");
+	// printf("\n");
 	// ft_printf("My length: %d", mine);
 	// printf("\n");
 	// printf("Her length: %d", official);
 	// printf("\n");
 
+
+	//static unsigned int		mx_u = 236;
+	//static char				mx_c = 'G';
+	//static char			   *mx_s = "Hello, World!";
+	//static int				mx_i = 42;
+
+	ft_printf("%9.2d", UINT_MAX);
+	printf("\n");
+	printf("%9.2d", UINT_MAX);
+	printf("\n");
 
 	//ft_printf("-----------Mine--------------\n");
 	// //ft_printf("Char: %5%");
