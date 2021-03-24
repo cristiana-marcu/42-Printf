@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/23 19:26:14 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/24 11:16:36 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char	*ft_arg_to_string(va_list *vl, t_format *format)
 {
 	char				*str_from_arg;
 	unsigned long long	arg;
+	char				*temp;
 
 	if (format->specifier == 's')
 	{
@@ -64,17 +65,34 @@ char	*ft_arg_to_string(va_list *vl, t_format *format)
 	else if (format->specifier == 'p')
 	{
 		arg = (unsigned long long)va_arg(*vl, void *);
-		str_from_arg = ft_itoa_base(arg, 16);
+		temp = ft_itoa_base(arg, 16);
+		str_from_arg = temp;
+		free(temp);
 	}
 	else if (format->specifier == 'd' || format->specifier == 'i')
-		str_from_arg = ft_itoa(va_arg(*vl, int));
+	{
+		temp = ft_itoa(va_arg(*vl, int));
+		str_from_arg = temp;
+		free(temp);
+	}
 	else if (format->specifier == 'u')
-		str_from_arg = ft_itoa_base(va_arg(*vl, unsigned int), 10);
+	{
+		temp = ft_itoa_base(va_arg(*vl, unsigned int), 10);
+		str_from_arg = temp;
+		free(temp);
+	}
 	else if (format->specifier == 'x')
-		str_from_arg = ft_itoa_base(va_arg(*vl, unsigned int), 16);
+	{
+		temp = ft_itoa_base(va_arg(*vl, unsigned int), 16);
+		str_from_arg = temp;
+		free(temp);
+	}
 	else if (format->specifier == 'X')
-		str_from_arg
-			= ft_strtoupper(ft_itoa_base(va_arg(*vl, unsigned int), 16));
+	{
+		temp = ft_strtoupper(ft_itoa_base(va_arg(*vl, unsigned int), 16));
+		str_from_arg = temp;
+		free(temp);
+	}
 	else
 		str_from_arg = "";
 	return (str_from_arg);
@@ -97,10 +115,13 @@ char	*ft_strtoupper(char *str_from_arg)
 char	*ft_handle_chars(va_list *vl)
 {
 	char	*str;
+	char	*temp;
 
-	str = (char *)malloc(2 * sizeof(char));
-	if (!str)
+	temp = (char *)malloc(2 * sizeof(char));
+	if (!temp)
 		return (NULL);
+	str = temp;
+	free(temp);
 	str[0] = va_arg(*vl, int);
 	str[1] = '\0';
 	return (str);
@@ -157,8 +178,8 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 		if (ft_isdigit(str[i]))
 		{
 			format->width = ft_atoi(str + i);
-			i += ft_strlen(ft_itoa(format->width));
-			result += ft_strlen(ft_itoa(format->width));
+			i += integer_length(format->width);
+			result += integer_length(format->width);
 		}
 		else
 		{
@@ -185,8 +206,8 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 				i++;
 			}
 			if (format->precision != 0)
-				i += ft_strlen(ft_itoa(format->precision));
-			result += ft_strlen(ft_itoa(format->precision)) + 1;
+				i += integer_length(format->precision);
+			result += integer_length(format->precision) + 1;
 		}
 		else if (str[i] == '*')
 		{
@@ -205,6 +226,23 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 		format->specifier = str[i];
 	result++;
 	return (result);
+}
+
+int	integer_length(int n)
+{
+	int	length;
+
+	length = 0;
+	if (n < 0)
+		length++;
+	if (n == 0)
+		length = 1;
+	while (n != 0)
+	{
+		length++;
+		n = n / 10;
+	}
+	return (length);
 }
 
 int	ft_get_length(char *str_from_arg, t_format *format)
@@ -359,9 +397,14 @@ void	ft_putnchar(char c, int n)
 void	ft_print_string(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
+	char	*temp;
 	if ((format->precision < format->width && format->p_has_changed)
 		|| lengths->res_length < lengths->arg_length)
-		str_from_arg = ft_substr(str_from_arg, 0, (size_t)format->precision);
+	{
+		temp = ft_substr(str_from_arg, 0, (size_t)format->precision);
+		str_from_arg = temp;
+		free(temp);
+	}
 	if (format->precision >= lengths->arg_length
 		&& format->width <= (int)ft_strlen(str_from_arg))
 		ft_putstr_fd(str_from_arg, 1);
@@ -396,7 +439,6 @@ t_lengths *lengths)
 			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
 		ft_putstr_fd(str_from_arg, 1);
 	}
-	//free(str_from_arg);
 }
 
 void	ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
@@ -423,7 +465,6 @@ void	ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
 				write(1, str_from_arg, 1);
 			}
 		}
-		//free(str_from_arg);
 	}
 }
 
