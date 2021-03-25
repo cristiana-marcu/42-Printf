@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/24 18:41:39 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/25 15:00:26 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ int	main()
 	//static char			   *mx_s = "Hello, World!";
 	//static int				mx_i = 42;
 
-	ft_printf("%9.2d", UINT_MAX);
+	ft_printf("%.0d", 0);
 	printf("\n");
-	printf("%9.2d", UINT_MAX);
+	printf("%.0d", 0);
 	printf("\n");
 
 	//ft_printf("-----------Mine--------------\n");
