@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/25 15:02:49 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/26 16:38:18 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,50 +49,23 @@ int	ft_printf(const char *str, ...)
 char	*ft_arg_to_string(va_list *vl, t_format *format)
 {
 	char				*str_from_arg;
-	unsigned long long	arg;
-	char				*temp;
 
 	if (format->specifier == 's')
-	{
-		str_from_arg = va_arg(*vl, char *);
-		if (str_from_arg == NULL || str_from_arg == 0)
-			str_from_arg = "(null)";
-	}
+		str_from_arg = ft_handle_s(vl);
 	else if (format->specifier == 'c')
-		str_from_arg = ft_handle_chars(vl);
+		str_from_arg = ft_handle_c(vl);
 	else if (format->specifier == '%')
 		str_from_arg = "%";
 	else if (format->specifier == 'p')
-	{
-		arg = (unsigned long long)va_arg(*vl, void *);
-		temp = ft_itoa_base(arg, 16);
-		str_from_arg = temp;
-		free(temp);
-	}
+		str_from_arg = ft_handle_p(vl);
 	else if (format->specifier == 'd' || format->specifier == 'i')
-	{
-		temp = ft_itoa(va_arg(*vl, int));
-		str_from_arg = temp;
-		free(temp);
-	}
+		str_from_arg = ft_handle_di(vl);
 	else if (format->specifier == 'u')
-	{
-		temp = ft_itoa_base(va_arg(*vl, unsigned int), 10);
-		str_from_arg = temp;
-		free(temp);
-	}
+		str_from_arg = ft_handle_u(vl);
 	else if (format->specifier == 'x')
-	{
-		temp = ft_itoa_base(va_arg(*vl, unsigned int), 16);
-		str_from_arg = temp;
-		free(temp);
-	}
+		str_from_arg = ft_handle_x(vl);
 	else if (format->specifier == 'X')
-	{
-		temp = ft_strtoupper(ft_itoa_base(va_arg(*vl, unsigned int), 16));
-		str_from_arg = temp;
-		free(temp);
-	}
+		str_from_arg = ft_handle_X(vl);
 	else
 		str_from_arg = "";
 	return (str_from_arg);
@@ -112,7 +85,7 @@ char	*ft_strtoupper(char *str_from_arg)
 	return (str_from_arg);
 }
 
-char	*ft_handle_chars(va_list *vl)
+char	*ft_handle_c(va_list *vl)
 {
 	char	*str;
 	char	*temp;
@@ -124,6 +97,73 @@ char	*ft_handle_chars(va_list *vl)
 	free(temp);
 	str[0] = va_arg(*vl, int);
 	str[1] = '\0';
+	return (str);
+}
+
+char	*ft_handle_s(va_list *vl)
+{
+	char	*str;
+
+	str = va_arg(*vl, char *);
+	if (str == NULL || str == 0)
+		str = "(null)";
+	return (str);
+}
+
+char	*ft_handle_p(va_list *vl)
+{
+	char				*str;
+	char				*temp;
+	unsigned long long	arg;
+
+	arg = (unsigned long long)va_arg(*vl, void *);
+	temp = ft_itoa_base(arg, 16);
+	str = temp;
+	free(temp);
+	return (str);
+}
+
+char	*ft_handle_di(va_list *vl)
+{
+	char				*str;
+	char				*temp;
+
+	temp = ft_itoa(va_arg(*vl, int));
+	str = temp;
+	free(temp);
+	return (str);
+}
+
+char	*ft_handle_u(va_list *vl)
+{
+	char				*str;
+	char				*temp;
+
+	temp = ft_itoa_base(va_arg(*vl, unsigned int), 10);
+	str = temp;
+	free(temp);
+	return (str);
+}
+
+char	*ft_handle_x(va_list *vl)
+{
+	char				*str;
+	char				*temp;
+
+	temp = ft_itoa_base(va_arg(*vl, unsigned int), 16);
+	str = temp;
+	free(temp);
+	return (str);
+}
+
+char	*ft_handle_X(va_list *vl)
+{
+	char				*str;
+	char				*temp;
+
+	temp = ft_itoa_base(va_arg(*vl, unsigned int), 16);
+	str = ft_strtoupper(temp);
+	free(temp);
 	return (str);
 }
 
@@ -161,59 +201,79 @@ void	ft_get_flags(char *str, int i, t_format *format)
 	}
 }
 
+void	check_f_flags(t_format *format, char *str, int *p_i, int *p_result)
+{
+	ft_get_flags(str, *p_i, format);
+	*p_i += 1;
+	*p_result += 1;
+}
+
+void	check_f_width(t_format *format, char *str, int *p_i, int *p_result)
+{
+	format->width = ft_atoi(str + *p_i);
+	*p_i += integer_length(format->width);
+	*p_result += integer_length(format->width);
+}
+
+void	check_f_width_vl(t_format *format, va_list *vl, int *p_i, int *p_result)
+{
+	format->width = va_arg(*vl, int);
+	*p_i += 1;
+	*p_result += 1;
+}
+
+void	check_f_prec(t_format *format, char *str, int *p_i, int *p_result)
+{
+	while (str[*p_i] == '0')
+	{
+		*p_result += 1;
+		*p_i += 1;
+	}
+	if (ft_isdigit(str[*p_i]))
+		format->precision = ft_atoi(str + *p_i);
+	else
+		format->precision = 0;
+	if (format->precision != 0)
+		*p_i += integer_length(format->precision);
+	else
+		*p_result -= 1;
+	*p_result += integer_length(format->precision) + 1;
+}
+
+void	check_f_prec_vl(t_format *format, va_list *vl, int *p_i, int *p_result)
+{
+	format->width = va_arg(*vl, int);
+	*p_i += 1;
+	*p_result += 2;
+}
+
 int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 {
 	int	result;
+	int	*p_result;
+	int	*p_i;
 
 	result = 1;
+	p_result = &result;
+	p_i = &i;
+
 	i++;
 	while (str[i] == '0' || str[i] == '-')
-	{
-		ft_get_flags(str, i, format);
-		i++;
-		result++;
-	}
+		check_f_flags(format, str, p_i, p_result);
 	if (ft_isdigit(str[i]) || str[i] == '*')
 	{
 		if (ft_isdigit(str[i]))
-		{
-			format->width = ft_atoi(str + i);
-			i += integer_length(format->width);
-			result += integer_length(format->width);
-		}
+			check_f_width(format, str, p_i, p_result);
 		else
-		{
-			format->width = va_arg(*vl, int);
-			i++;
-			result++;
-		}
+			check_f_width_vl(format, vl, p_i, p_result);
 	}
 	if (str[i] == '.')
 	{
 		i++;
 		if (ft_isdigit(str[i]))
-		{
-			while (str[i] == '0')
-			{
-				result++;
-				i++;
-			}
-			if (ft_isdigit(str[i]))
-				format->precision = ft_atoi(str + i);
-			else
-				format->precision = 0;
-			if (format->precision != 0)
-				i += integer_length(format->precision);
-			else
-				result--;
-			result += integer_length(format->precision) + 1;
-		}
+			check_f_prec(format, str, p_i, p_result);
 		else if (str[i] == '*')
-		{
-			format->precision = va_arg(*vl, int);
-			i++;
-			result += 2;
-		}
+			check_f_prec_vl(format, vl, p_i, p_result);
 		else
 		{
 			format->precision = 0;
@@ -223,8 +283,7 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 	}
 	if (ft_strchr("scpdiux%X", str[i]))
 		format->specifier = str[i];
-	result++;
-	return (result);
+	return (++result);
 }
 
 int	integer_length(int n)
@@ -279,7 +338,7 @@ int	ft_get_string_length(char *str_from_arg, t_format *format)
 		&& format->precision >= res_length)
 		res_length = format->width;
 	else if (format->width > res_length || (format->width > format->precision
-		&& format->p_has_changed))
+			&& format->p_has_changed))
 		res_length = format->width;
 	else if (format->precision < res_length && res_length != 0
 		&& format->p_has_changed)
@@ -333,8 +392,6 @@ int	ft_get_integer_length(char *str_from_arg, t_format *format)
 	}
 	if (format->precision == 0)
 		format->precision = 0;
-	/*else if (format->precision < length)
-		format->precision = length;*/
 	if (format->precision >= format->width && format->p_has_changed)
 	{
 		if (str_from_arg[0] == '-' && format->precision >= length - 1)
@@ -352,6 +409,11 @@ int	ft_get_unsigned_length(char *str_from_arg, t_format *format)
 	int	length;
 
 	length = ft_strlen(str_from_arg);
+	if (format->width < 0)
+	{
+		format->flag_minus = 1;
+		format->width *= -1;
+	}
 	if (format->precision < 0)
 		length = 1;
 	if (format->precision < length)
@@ -397,6 +459,7 @@ void	ft_print_string(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
 	char	*temp;
+
 	if ((format->precision < format->width && format->p_has_changed)
 		|| lengths->res_length < lengths->arg_length)
 	{
@@ -486,7 +549,7 @@ t_lengths *lengths)
 	else
 	{
 		if (format->width > lengths->arg_length && (lengths->arg_length != 0
-			|| format->precision == 0))
+				|| format->precision == 0))
 			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 2);
 		else
 			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 3);
@@ -599,7 +662,8 @@ t_lengths *lengths)
 				ft_putstr_fd(str_from_arg, 1);
 			}
 		}
-		else if (format->width > format->precision && format->precision > lengths->arg_length)
+		else if (format->width > format->precision
+			&& format->precision > lengths->arg_length)
 		{
 			ft_putnchar(' ', lengths->res_length - format->precision);
 			ft_putnchar('0', format->precision - lengths->arg_length);
@@ -688,7 +752,8 @@ t_lengths *lengths)
 		substr = str_from_arg + 1;
 		ft_putstr_fd(substr, 1);
 	}
-	else if (format->width > format->precision && format->precision < lengths->arg_length)
+	else if (format->width > format->precision
+		&& format->precision < lengths->arg_length)
 	{
 		ft_putnchar(' ', lengths->res_length - lengths->arg_length);
 		ft_putnchar('0', format->precision - lengths->arg_length);
