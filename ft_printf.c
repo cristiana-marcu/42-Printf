@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/26 16:38:18 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/26 17:01:56 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -242,7 +242,7 @@ void	check_f_prec(t_format *format, char *str, int *p_i, int *p_result)
 
 void	check_f_prec_vl(t_format *format, va_list *vl, int *p_i, int *p_result)
 {
-	format->width = va_arg(*vl, int);
+	format->precision = va_arg(*vl, int);
 	*p_i += 1;
 	*p_result += 2;
 }
@@ -256,17 +256,13 @@ int	ft_check_formatters(va_list *vl, char *str, int i, t_format *format)
 	result = 1;
 	p_result = &result;
 	p_i = &i;
-
 	i++;
 	while (str[i] == '0' || str[i] == '-')
 		check_f_flags(format, str, p_i, p_result);
-	if (ft_isdigit(str[i]) || str[i] == '*')
-	{
-		if (ft_isdigit(str[i]))
-			check_f_width(format, str, p_i, p_result);
-		else
-			check_f_width_vl(format, vl, p_i, p_result);
-	}
+	if (ft_isdigit(str[i]))
+		check_f_width(format, str, p_i, p_result);
+	else if (str[i] == '*')
+		check_f_width_vl(format, vl, p_i, p_result);
 	if (str[i] == '.')
 	{
 		i++;
