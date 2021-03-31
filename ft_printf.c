@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/26 17:01:56 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/31 16:12:32 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ char	*ft_handle_u(va_list *vl)
 	char				*str;
 	char				*temp;
 
-	temp = ft_itoa_base(va_arg(*vl, unsigned int), 10);
+	temp = ft_itoa(va_arg(*vl, unsigned int));
 	str = temp;
 	free(temp);
 	return (str);
@@ -149,8 +149,19 @@ char	*ft_handle_x(va_list *vl)
 {
 	char				*str;
 	char				*temp;
+	unsigned int		arg;
 
-	temp = ft_itoa_base(va_arg(*vl, unsigned int), 16);
+	arg = va_arg(*vl, unsigned int);
+	if (arg == 0)
+	{
+		temp = (char *)malloc(sizeof(char) * 2);
+		if (!temp)
+			return (NULL);
+		temp[0] = '0';
+		temp[1] = '\0';
+	}
+	else
+		temp = ft_itoa_base(arg, 16);
 	str = temp;
 	free(temp);
 	return (str);
@@ -160,8 +171,19 @@ char	*ft_handle_X(va_list *vl)
 {
 	char				*str;
 	char				*temp;
+	unsigned int		arg;
 
-	temp = ft_itoa_base(va_arg(*vl, unsigned int), 16);
+	arg = va_arg(*vl, unsigned int);
+	if (arg == 0)
+	{
+		temp = (char *)malloc(sizeof(char) * 2);
+		if (!temp)
+			return (NULL);
+		temp[0] = '0';
+		temp[1] = '\0';
+	}
+	else
+		temp = ft_itoa_base(arg, 16);
 	str = ft_strtoupper(temp);
 	free(temp);
 	return (str);
@@ -386,8 +408,6 @@ int	ft_get_integer_length(char *str_from_arg, t_format *format)
 		format->flag_minus = 1;
 		format->width *= -1;
 	}
-	if (format->precision == 0)
-		format->precision = 0;
 	if (format->precision >= format->width && format->p_has_changed)
 	{
 		if (str_from_arg[0] == '-' && format->precision >= length - 1)
@@ -412,10 +432,11 @@ int	ft_get_unsigned_length(char *str_from_arg, t_format *format)
 	}
 	if (format->precision < 0)
 		length = 1;
-	if (format->precision < length)
-		format->precision = length;
-	if (format->precision >= format->width)
-		length = format->precision;
+	if (format->precision >= format->width && format->p_has_changed)
+	{
+		if (format->precision >= length || format->precision == 0)
+			length = format->precision;
+	}
 	else if (format->width > length)
 		length = format->width;
 	return (length);
@@ -455,6 +476,7 @@ void	ft_print_string(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
 	char	*temp;
+	size_t	strlen;
 
 	if ((format->precision < format->width && format->p_has_changed)
 		|| lengths->res_length < lengths->arg_length)
@@ -463,40 +485,12 @@ t_lengths *lengths)
 		str_from_arg = temp;
 		free(temp);
 	}
-	if (format->precision >= lengths->arg_length
-		&& format->width <= (int)ft_strlen(str_from_arg))
+	strlen = ft_strlen(str_from_arg);
+	if (format->flag_minus)
 		ft_putstr_fd(str_from_arg, 1);
-	else if (format->flag_minus == 1)
-	{
+	ft_putnchar(' ', format->width - strlen);
+	if (!format->flag_minus)
 		ft_putstr_fd(str_from_arg, 1);
-		if (format->precision > lengths->arg_length && format->p_has_changed)
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-		else if (format->p_has_changed)
-			ft_putnchar(' ', lengths->res_length - format->precision);
-		else
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-	}
-	else if (format->flag_zero)
-	{
-		ft_putnchar('0', lengths->res_length - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-	}
-	else if (format->width > format->precision
-		&& lengths->arg_length > lengths->res_length)
-	{
-		ft_putnchar(' ', format->width - format->precision);
-		ft_putstr_fd(str_from_arg, 1);
-	}
-	else
-	{
-		if (format->precision > lengths->arg_length && format->p_has_changed)
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-		else if (format->p_has_changed)
-			ft_putnchar(' ', lengths->res_length - format->precision);
-		else
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-	}
 }
 
 void	ft_print_char(char *str_from_arg, t_format *format, t_lengths *lengths)
@@ -605,73 +599,73 @@ int	itoa_base_length(unsigned long long n, unsigned long long base)
 void	ft_print_integer(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
+	int	diff;
+
+	diff = format->precision - lengths->arg_length;
+	if (diff < 0)
+		diff = 0;
+	if (str_from_arg[0] == '-')
+		diff++;
 	if (str_from_arg[0] == '-')
 		ft_print_negative(str_from_arg, format, lengths);
 	else
+		ft_print_positive(str_from_arg, format, lengths, diff);
+}
+
+void	ft_print_positive(char *str_from_arg, t_format *format,
+t_lengths *lengths, int diff)
+{
+	if (format->flag_minus)
 	{
-		if (lengths->res_length == lengths->arg_length)
+		ft_putnchar('0', diff);
+		if (format->precision != 0 || str_from_arg[0] != '0')
 			ft_putstr_fd(str_from_arg, 1);
-		else if (format->precision == 0 && format->flag_minus
-			&& str_from_arg[0] != '0')
+		if (format->width > lengths->arg_length)
 		{
-			ft_putstr_fd(str_from_arg, 1);
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-		}
-		else if (format->precision == 0 && str_from_arg[0] != '0')
-		{
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
-		}
-		else if (format->precision == 0 && str_from_arg[0] == '0')
-			ft_putnchar(' ', format->width);
-		else if (format->precision >= format->width && format->precision != 0)
-		{
-			ft_putnchar('0', format->precision - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
-		}
-		else if (format->flag_minus)
-		{
-			ft_putnchar('0', format->precision - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
-			if (format->precision > lengths->arg_length)
-				ft_putnchar(' ', lengths->res_length - format->precision);
-			else
-				ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-		}
-		else if (format->precision > lengths->arg_length && format->flag_zero)
-		{
-			ft_putnchar(' ', lengths->res_length - format->precision);
-			ft_putnchar('0', format->precision - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
-		}
-		else if (format->width > lengths->arg_length && format->flag_zero)
-		{
-			if (format->precision <= lengths->arg_length
-				&& format->p_has_changed)
-			{
-				ft_putnchar(' ', format->width - lengths->arg_length);
-				ft_putstr_fd(str_from_arg, 1);
-			}
-			else
-			{
-				ft_putnchar('0', format->width - lengths->arg_length);
-				ft_putstr_fd(str_from_arg, 1);
-			}
-		}
-		else if (format->width > format->precision
-			&& format->precision > lengths->arg_length)
-		{
-			ft_putnchar(' ', lengths->res_length - format->precision);
-			ft_putnchar('0', format->precision - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
-		}
-		else
-		{
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-			ft_putnchar('0', format->precision - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length - diff);
+			if (str_from_arg[0] == '0' && diff == 0 && format->p_has_changed)
+				write(1, " ", 1);
 		}
 	}
+	else
+	{
+		if (format->width > lengths->arg_length)
+			di_handle_width(str_from_arg, format, lengths, diff);
+		else
+		{
+			ft_putnchar('0', diff);
+			if (format->precision != 0 || str_from_arg[0] != '0')
+				ft_putstr_fd(str_from_arg, 1);
+		}
+	}
+}
+
+void	di_handle_width(char *str_from_arg, t_format *format,
+t_lengths *lengths, int diff)
+{
+	if (format->flag_zero && diff == 0)
+	{
+		if (format->precision != 0 && format->p_has_changed)
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length);
+		if (format->precision == 0 || !format->p_has_changed)
+		{
+			ft_putnchar('0', lengths->res_length - lengths->arg_length);
+			if (str_from_arg[0] == '0' && format->precision != 0)
+				write(1, "0", 1);
+		}
+	}
+	else
+	{
+		ft_putnchar(' ', lengths->res_length - lengths->arg_length - diff);
+		if (str_from_arg[0] == '0' && format->precision != 0 && diff == 0)
+			write(1, "0", 1);
+		else if (str_from_arg[0] == '0' && format->precision == 0)
+			write(1, " ", 1);
+	}
+	ft_putnchar('0', diff);
+	if ((format->p_has_changed && format->precision != 0)
+		|| str_from_arg[0] != '0')
+		ft_putstr_fd(str_from_arg, 1);
 }
 
 void	ft_print_negative(char *str_from_arg, t_format *format,
@@ -771,92 +765,64 @@ t_lengths *lengths)
 void	ft_print_unsigned(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
-	if (lengths->res_length == lengths->arg_length)
-		ft_putstr_fd(str_from_arg, 1);
-	else if (format->precision == 0)
-		ft_putnchar(' ', lengths->res_length);
-	else if (format->precision >= format->width)
+	int	diff;
+
+	diff = format->precision - lengths->arg_length;
+	if (diff < 0)
+		diff = 0;
+	if (format->flag_minus)
 	{
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-	}
-	else if (format->flag_minus)
-	{
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-		ft_putnchar(' ', lengths->res_length - format->precision);
-	}
-	else if (format->precision > lengths->arg_length && format->flag_zero
-		&& format->p_has_changed)
-	{
-		ft_putnchar(' ', lengths->res_length - format->precision);
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-	}
-	else if (format->width > lengths->arg_length && format->flag_zero)
-	{
-		if (format->precision <= lengths->arg_length && format->p_has_changed)
-		{
-			ft_putnchar(' ', format->width - lengths->arg_length);
+		ft_putnchar('0', diff);
+		if (format->precision != 0 || str_from_arg[0] != '0')
 			ft_putstr_fd(str_from_arg, 1);
-		}
-		else
+		if (format->width > lengths->arg_length)
 		{
-			ft_putnchar('0', format->width - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length - diff);
+			if (str_from_arg[0] == '0' && diff == 0 && format->p_has_changed)
+				write(1, " ", 1);
 		}
 	}
 	else
 	{
-		ft_putnchar(' ', lengths->res_length - format->precision);
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
+		if (format->width > lengths->arg_length)
+			di_handle_width(str_from_arg, format, lengths, diff);
+		else
+		{
+			ft_putnchar('0', diff);
+			if (format->precision != 0 || str_from_arg[0] != '0')
+				ft_putstr_fd(str_from_arg, 1);
+		}
 	}
 }
 
 void	ft_print_hex(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
-	if (format->precision < lengths->arg_length)
-		format->precision = lengths->arg_length;
-	if (lengths->res_length == lengths->arg_length)
-		ft_putstr_fd(str_from_arg, 1);
-	else if (format->precision == 0)
-		ft_putnchar(' ', lengths->res_length);
-	else if (format->precision >= format->width)
+	int	diff;
+
+	diff = format->precision - lengths->arg_length;
+	if (diff < 0)
+		diff = 0;
+	if (format->flag_minus)
 	{
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-	}
-	else if (format->flag_minus)
-	{
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-		ft_putnchar(' ', lengths->res_length - format->precision);
-	}
-	else if (format->precision > lengths->arg_length && format->flag_zero
-		&& format->p_has_changed)
-	{
-		ft_putnchar(' ', lengths->res_length - format->precision);
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
-	}
-	else if (format->width > lengths->arg_length && format->flag_zero)
-	{
-		if (format->precision <= lengths->arg_length && format->p_has_changed)
-		{
-			ft_putnchar(' ', format->width - lengths->arg_length);
+		ft_putnchar('0', diff);
+		if (format->precision != 0 || str_from_arg[0] != '0')
 			ft_putstr_fd(str_from_arg, 1);
-		}
-		else
+		if (format->width > lengths->arg_length)
 		{
-			ft_putnchar('0', format->width - lengths->arg_length);
-			ft_putstr_fd(str_from_arg, 1);
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length - diff);
+			if (str_from_arg[0] == '0' && diff == 0 && format->p_has_changed)
+				write(1, " ", 1);
 		}
 	}
 	else
 	{
-		ft_putnchar(' ', lengths->res_length - format->precision);
-		ft_putnchar('0', format->precision - lengths->arg_length);
-		ft_putstr_fd(str_from_arg, 1);
+		if (format->width > lengths->arg_length)
+			di_handle_width(str_from_arg, format, lengths, diff);
+		else
+		{
+			ft_putnchar('0', diff);
+			if (format->precision != 0 || str_from_arg[0] != '0')
+				ft_putstr_fd(str_from_arg, 1);
+		}
 	}
 }

@@ -6,13 +6,13 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:46:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/22 15:32:29 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/03/31 15:27:24 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	itoa_length(int n)
+static int	itoa_length(long long int n)
 {
 	int	length;
 
@@ -29,13 +29,13 @@ static int	itoa_length(int n)
 	return (length);
 }
 
-static void	ft_if_zero(int n, char *str)
+static void	ft_if_zero(long long int n, char *str)
 {
 	if (n == 0)
 		str[0] = '0';
 }
 
-char	*ft_itoa(int n)
+char	*ft_itoa(long long int n)
 {
 	char	*str;
 	int		length;
