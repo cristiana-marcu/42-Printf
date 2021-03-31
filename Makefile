@@ -6,11 +6,14 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/16 12:32:23 by cmarcu            #+#    #+#              #
-#    Updated: 2021/03/22 11:31:44 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/03/31 19:10:53 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-SRCS	=	ft_printf.c main.c
+SRCS	=	ft_printf.c main.c check_format.c check_prec.c \
+	check_width.c get_length.c init.c print_char.c \
+	print_integer.c print_negative.c print_pointer.c print_string.c \
+	print_ux.c retrieve_string.c retrieve_string2.c utils.c
 OBJS	=	$(SRCS:.c=.o)
 
 LIBFT	=	libft.a
