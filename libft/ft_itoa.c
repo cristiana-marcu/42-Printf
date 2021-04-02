@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/26 09:46:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/31 15:27:24 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/02 16:32:02 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_itoa(long long int n)
 	int		length;
 
 	length = itoa_length(n);
-	str = (char *)malloc(sizeof(*str) * (length + 1));
+	str = (char *)malloc(sizeof(char) * (length + 1));
 	if (!str)
 		return (NULL);
 	str[length] = '\0';

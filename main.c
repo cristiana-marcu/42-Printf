@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/31 17:17:57 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/02 17:30:55 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int	main()
 
 	int		mine;
 	int		official;
-	mine = ft_printf("Mine: %10.5d|", -216);
+	mine = ft_printf(" %10p %-10p| ", 0, 0);
 	printf("\n");
-	official = printf("Hers: %10.5d|", -216);
+	official = printf(" %10p %-10p| ", 0, 0);
 	printf("\n");
 	ft_printf("My length: %d", mine);
 	printf("\n");

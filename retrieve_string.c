@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:00:02 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/31 19:00:11 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/02 16:56:26 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,8 +79,10 @@ char	*ft_handle_di(va_list *vl)
 {
 	char				*str;
 	char				*temp;
+	unsigned long long	arg;
 
-	temp = ft_itoa(va_arg(*vl, int));
+	arg = (long long)va_arg(*vl, int);
+	temp = ft_itoa(arg);
 	str = temp;
 	free(temp);
 	return (str);

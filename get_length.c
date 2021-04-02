@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:46:36 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/31 18:47:17 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/02 17:28:58 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,11 @@ int	ft_get_pointer_length(t_format *format, char *str_from_arg)
 	int	res_length;
 
 	res_length = ft_strlen(str_from_arg) + 2;
+	if (format->width < 0)
+	{
+		format->flag_minus = 1;
+		format->width *= -1;
+	}
 	if (res_length == 2)
 	{
 		if (!format->p_has_changed && format->precision != 0)

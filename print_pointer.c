@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:54:14 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/31 18:54:40 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/02 17:33:50 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,11 @@ t_lengths *lengths)
 	else if (format->flag_minus)
 	{
 		print_address(format, lengths, str_from_arg);
-		ft_putnchar(' ', lengths->res_length - lengths->arg_length - 2);
+		if (format->width > lengths->arg_length && (lengths->arg_length != 0
+				|| format->precision == 0))
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 2);
+		else
+			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 3);
 	}
 	else if (format->flag_zero)
 	{
@@ -44,7 +48,7 @@ void	print_address(t_format *format, t_lengths *lengths, char *str)
 	write(1, "0x", 2);
 	if (format->p_has_changed && format->precision > 0)
 		ft_putnchar('0', lengths->res_length - format->precision);
-	else if ((str[0] == '\0' || lengths->res_length == 3)
+	else if ((str[0] == '\0' || lengths->arg_length == 0)
 		&& format->precision != 0)
 		write(1, "0", 1);
 	ft_putstr_fd(str, 1);
