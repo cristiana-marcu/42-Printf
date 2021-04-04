@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/02 17:30:55 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/04 14:57:59 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ int	main()
 	//static char *s_hidden = "hi low\0don't print me lol\0";
 	//char *mystring = "nono";
 	//char mychar = '%';
-	//int mynumber = -120;
+	int mynumber = 198;
 
 	int		mine;
 	int		official;
-	mine = ft_printf(" %10p %-10p| ", 0, 0);
+	mine = ft_printf("%03.1d|", 0);
 	printf("\n");
-	official = printf(" %10p %-10p| ", 0, 0);
+	official = printf("%03.1d|", 0);
 	printf("\n");
 	ft_printf("My length: %d", mine);
 	printf("\n");

@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:54:14 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/02 17:33:50 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/04 15:14:21 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,16 +15,16 @@
 void	ft_print_pointer(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
-	if (lengths->res_length == lengths->arg_length)
+	if (lengths->res_length - 2 == lengths->arg_length
+		&& str_from_arg[0] != '\0')
+	{
+		write(1, "0x", 2);
 		ft_putstr_fd(str_from_arg, 1);
+	}
 	else if (format->flag_minus)
 	{
 		print_address(format, lengths, str_from_arg);
-		if (format->width > lengths->arg_length && (lengths->arg_length != 0
-				|| format->precision == 0))
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 2);
-		else
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 3);
+		spaces_to_print(format, lengths);
 	}
 	else if (format->flag_zero)
 	{
@@ -34,11 +34,7 @@ t_lengths *lengths)
 	}
 	else
 	{
-		if (format->width > lengths->arg_length && (lengths->arg_length != 0
-				|| format->precision == 0))
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 2);
-		else
-			ft_putnchar(' ', lengths->res_length - lengths->arg_length - 3);
+		spaces_to_print(format, lengths);
 		print_address(format, lengths, str_from_arg);
 	}
 }
@@ -52,4 +48,13 @@ void	print_address(t_format *format, t_lengths *lengths, char *str)
 		&& format->precision != 0)
 		write(1, "0", 1);
 	ft_putstr_fd(str, 1);
+}
+
+void	spaces_to_print(t_format *format, t_lengths *lengths)
+{
+	if (format->width > lengths->arg_length && (lengths->arg_length != 0
+			|| format->precision == 0))
+		ft_putnchar(' ', lengths->res_length - lengths->arg_length - 2);
+	else
+		ft_putnchar(' ', lengths->res_length - lengths->arg_length - 3);
 }

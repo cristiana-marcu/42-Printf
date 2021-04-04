@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/02 16:56:49 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/04 13:39:12 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void			ft_print_char(char *str_from_arg, t_format *format,
 void			ft_print_pointer(char *str_from_arg, t_format *format,
 					t_lengths *lengths);
 void			print_address(t_format *format, t_lengths *lengths, char *str);
+void			spaces_to_print(t_format *format, t_lengths *lengths);
 
 char			*ft_itoa_base(unsigned long long n, unsigned long long base);
 int				itoa_base_length(unsigned long long int n,
@@ -96,9 +97,12 @@ int				itoa_base_length(unsigned long long int n,
 
 void			ft_print_integer(char *str_from_arg, t_format *format,
 					t_lengths *lengths);
-int				get_diff(t_format *format, t_lengths *lengths);
+int				get_diff(t_format *format, t_lengths *lengths,
+					char *str_from_arg);
 void			di_handle_width(char *str_from_arg, t_format *format,
 					t_lengths *lengths, int diff);
+void			di_handle_width_flagzero(char *str_from_arg, t_format *format,
+					t_lengths *lengths);
 void			di_handle_neg_width(char *str_from_arg, t_format *format,
 					t_lengths *lengths, int diff);
 void			ft_handle_minusflag_neg(char *substr, t_format *format,

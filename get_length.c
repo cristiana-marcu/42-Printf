@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:46:36 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/02 17:28:58 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/04 13:55:34 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,8 @@ int	ft_get_pointer_length(t_format *format, char *str_from_arg)
 	}
 	if (res_length == 2)
 	{
-		if (!format->p_has_changed && format->precision != 0)
+		if ((!format->p_has_changed && format->precision != 0)
+			|| format->precision < 0)
 			res_length = 3;
 	}
 	if (format->precision > res_length)
@@ -89,8 +90,10 @@ int	ft_get_integer_length(char *str_from_arg, t_format *format)
 	{
 		if (str_from_arg[0] == '-' && format->precision >= length - 1)
 			length = format->precision + 1;
-		else if (format->precision >= length || format->precision == 0)
+		else if (format->precision >= length)
 			length = format->precision;
+		else if (format->precision == 0 && str_from_arg[0] == '0')
+			length = 0;
 	}
 	else if (format->width > length)
 		length = format->width;
@@ -111,8 +114,10 @@ int	ft_get_unsigned_length(char *str_from_arg, t_format *format)
 		length = 1;
 	if (format->precision >= format->width && format->p_has_changed)
 	{
-		if (format->precision >= length || format->precision == 0)
+		if (format->precision >= length)
 			length = format->precision;
+		else if (format->precision == 0 && str_from_arg[0] == '0')
+			length = 0;
 	}
 	else if (format->width > length)
 		length = format->width;
