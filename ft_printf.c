@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/02 15:30:19 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/05 14:20:25 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ const char *str)
 			str_from_arg = ft_arg_to_string(vl, format);
 			ft_init_lengths(lengths, str_from_arg, format);
 			ft_print_arg(str_from_arg, format, lengths);
+			free(str_from_arg);
 			result += lengths->res_length;
 		}
 		if (str[i] != '\0' && str[i] != '%')

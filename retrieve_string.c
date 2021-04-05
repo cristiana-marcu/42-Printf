@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:00:02 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/04 11:14:00 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/05 14:18:16 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_handle_c(va_list *vl)
 	if (!temp)
 		return (NULL);
 	str = temp;
-	free(temp);
+	//free(temp);
 	str[0] = va_arg(*vl, int);
 	str[1] = '\0';
 	return (str);
@@ -59,7 +59,7 @@ char	*ft_handle_s(va_list *vl)
 	str = va_arg(*vl, char *);
 	if (str == NULL || str == 0)
 		str = "(null)";
-	return (str);
+	return (ft_strdup(str));
 }
 
 char	*ft_handle_p(va_list *vl)
@@ -71,7 +71,7 @@ char	*ft_handle_p(va_list *vl)
 	arg = (unsigned long long)va_arg(*vl, void *);
 	temp = ft_itoa_base(arg, 16);
 	str = temp;
-	free(temp);
+	//free(temp);
 	return (str);
 }
 
@@ -84,6 +84,6 @@ char	*ft_handle_di(va_list *vl)
 	arg = (long long)va_arg(*vl, int);
 	temp = ft_itoa(arg);
 	str = temp;
-	free(temp);
+	//free(temp);
 	return (str);
 }

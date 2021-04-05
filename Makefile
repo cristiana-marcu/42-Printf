@@ -6,7 +6,7 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/02/16 12:32:23 by cmarcu            #+#    #+#              #
-#    Updated: 2021/04/02 15:29:57 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/04/05 14:02:23 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJS	=	$(SRCS:.c=.o)
 LIBFT	=	libft.a
 
 CC	= gcc
-CFLAGS	= -Wall -Wextra -Werror
+CFLAGS	= -Wall -Wextra -Werror -fsanitize=address -g3
 RM	= rm -f
 AR	= ar rcs
 

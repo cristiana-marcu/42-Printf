@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:55:22 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/04 15:13:11 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/05 17:23:59 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,12 +32,14 @@ t_lengths *lengths, int diff)
 		ft_putnchar('0', diff);
 		if (format->precision != 0 || str_from_arg[0] != '0')
 			ft_putstr_fd(str_from_arg, 1);
-		if (format->width > lengths->arg_length)
+		if (format->width >= lengths->arg_length)
 		{
 			ft_putnchar(' ', lengths->res_length - lengths->arg_length - diff);
-			if (str_from_arg[0] == '0' && diff == 0 && format->p_has_changed)
+			if (str_from_arg[0] == '0' && format->precision == 0
+				&& format->p_has_changed)
 				write(1, " ", 1);
 		}
+		//else if (format->width == lengths->arg_length && )
 	}
 	else
 	{

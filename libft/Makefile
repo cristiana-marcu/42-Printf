@@ -6,7 +6,7 @@
 #    By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/01/27 13:06:19 by cmarcu            #+#    #+#              #
-#    Updated: 2021/02/05 12:09:19 by cmarcu           ###   ########.fr        #
+#    Updated: 2021/04/05 14:03:05 by cmarcu           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ BONUS_OBJS	=	$(BONUS:.c=.o)
 
 CC	= gcc
 RM	= rm -f
-CFLAGS	= -Wall -Wextra -Werror -I.
+CFLAGS	= -Wall -Wextra -Werror -I. -fsanitize=address -g3
 
 NAME	= libft.a
 

@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/04 14:57:59 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/05 18:00:43 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,20 +21,80 @@ int	main()
 	//static char *s_hidden = "hi low\0don't print me lol\0";
 	//char *mystring = "nono";
 	//char mychar = '%';
-	int mynumber = 198;
+	//int mynumber = 198;
 
-	int		mine;
-	int		official;
-	mine = ft_printf("%03.1d|", 0);
-	printf("\n");
-	official = printf("%03.1d|", 0);
-	printf("\n");
-	ft_printf("My length: %d", mine);
-	printf("\n");
-	printf("Her length: %d", official);
-	printf("\n");
+	// static char	a01;
+	// static unsigned char a02;
+	// static short a03;
+	// static unsigned short a04;
+	// static int a05;
+	// static unsigned int a06;
+	// static long a07;
+	// static unsigned long a08;
+	// static long long a09;
+	// static unsigned long long a10;
+	// static char *a11;
+	// static void *a12;
+	// int		mine;
+	// int		official;
+	// mine = ft_printf("|%p|\n", NULL);
+	// official = printf("|%p|\n", NULL);
+	// ft_printf("My length: %d\n", mine);
+	// printf("Her length: %d\n", official);
 
+	// printf(" LENGTH printf    : %d\n", printf("|%p|", NULL));
+	// ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%p|", NULL));
 
+	// printf(" LENGTH printf    : %d\n", printf("|%p|", NULL));
+	// ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%p|", NULL));
+
+	// printf(" LENGTH printf    : %d\n", printf("|%p|", NULL));
+	// ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%p|", NULL));
+
+	// printf(" LENGTH printf    : %d\n", printf("|%p|", NULL));
+	// ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%p|", NULL));
+
+	int		a = -4;
+	int		b = 0;
+	char	c = 'a';
+	int		d = 2147483647;
+	int		e = -2147483648;
+	int		f = 42;
+	int		g = 25;
+	//int		h = 4200;
+	int		i = 8;
+	int		j = -12;
+	int		k = 123456789;
+	int		l = 0;
+	int		m = -12345678;
+	char	*n = "abcdefghijklmnop";
+	char	*o = "-a";
+	char	*p = "-12";
+	char	*q = "0";
+	char	*r = "%%";
+	char	*s = "-2147483648";
+	char	*t = "0x12345678";
+	char	*u = "-0";
+
+	a = 4;
+	b = 3;
+	ft_printf("%*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s|\n", a, b, n, a, b, o, a, b, p, a, b, q, a, b, r, a, b, s, a, b, t, a, b, u);
+	printf("%*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s|\n", a, b, n, a, b, o, a, b, p, a, b, q, a, b, r, a, b, s, a, b, t, a, b, u);
+
+	ft_printf("%-1.0d, %-1.0d, %-1.0d, %-1.0d, %-1.0d\n", l, m, c, e, d);
+	printf("%-1.0d, %-1.0d, %-1.0d, %-1.0d, %-1.0d\n", l, m, c, e, d);
+
+	/*char *s = "asd";
+	char **p = &s;*/
+
+	/*ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%p|", p));
+	printf(" LENGTH printf    : %d\n\n", printf("|%p|", p));
+
+	ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%-.8p|", p));
+	printf(" LENGTH printf    : %d\n\n", printf("|%-.8p|", p));
+
+	ft_printf(" LENGTH ft_printf : %d\n", ft_printf("|%-.2p|", p));
+	printf(" LENGTH printf    : %d\n\n", printf("|%-.2p|", p));*/
 	//static unsigned int		mx_u = 236;
 	//static char				mx_c = 'G';
 	//static char			   *mx_s = "Hello, World!";

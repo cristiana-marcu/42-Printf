@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:57:22 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/04 15:14:04 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/05 15:45:46 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_lengths *lengths, int diff)
 		{
 			write(1, "-", 1);
 			ft_putnchar('0', diff);
-			if (format->precision != 0)
+			if (format->precision != 0 || str_from_arg[0] != '0')
 				ft_putstr_fd(substr, 1);
 		}
 	}
