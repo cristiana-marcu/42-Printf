@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/06 12:37:47 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 17:40:30 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,8 @@ void			ft_print_char(char *str_from_arg, t_format *format,
 void			ft_print_pointer(char *str_from_arg, t_format *format,
 					t_lengths *lengths);
 void			print_address(t_format *format, t_lengths *lengths, char *str);
-void			spaces_to_print(t_format *format, t_lengths *lengths);
+void			spaces_to_print(t_format *format, t_lengths *lengths,
+					char *str_from_arg);
 
 char			*ft_itoa_base(unsigned long long n, unsigned long long base);
 int				itoa_base_length(unsigned long long int n,

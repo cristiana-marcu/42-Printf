@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/06 13:33:46 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 19:26:50 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,18 +76,18 @@ int	main()
 	char	*t = "0x12345678";
 	char	*u = "-0";
 
-	a = 2;
-	b = -1;
-	//ft_printf("%%, 	, \, \", \', +");
-	//printf("%%, 	, \, \", \', +");
+	a = 3;
+	b = 1;
+	// mine = ft_printf("%.p|\n", NULL);
+	// official = printf("%.p|\n", NULL);
 
-	mine = ft_printf("%*p, %*x\n", a, NULL, a, 0);
-	official = printf("%*p, %*x\n", a, NULL, a, 0);
-	ft_printf("My length: %d\n", mine);
-	printf("Her length: %d\n", official);
+	// mine = ft_printf("%*p, %*x\n", a, NULL, a, 0);
+	// official = printf("%*p, %*x\n", a, NULL, a, 0);
+	// ft_printf("My length: %d\n", mine);
+	// printf("Her length: %d\n", official);
 
-	ft_printf("%*i, %*d, %*d, %*d, %*d, %*d, %*d, %*d\n", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
-	printf("%*i, %*d, %*d, %*d, %*d, %*d, %*d, %*d\n", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+	ft_printf("%0*.*d, %0*.*d, %0*.*d\n", a, b, c, a, b, e, a, b, d);
+	printf("%0*.*d, %0*.*d, %0*.*d\n", a, b, c, a, b, e, a, b, d);
 
 	/*char *s = "asd";
 	char **p = &s;*/
