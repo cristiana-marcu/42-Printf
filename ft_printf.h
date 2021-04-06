@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:49:43 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/04 13:39:12 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 12:37:47 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,6 +105,7 @@ void			di_handle_width_flagzero(char *str_from_arg, t_format *format,
 					t_lengths *lengths);
 void			di_handle_neg_width(char *str_from_arg, t_format *format,
 					t_lengths *lengths, int diff);
+int				ft_math_abs(int precision);
 void			ft_handle_minusflag_neg(char *substr, t_format *format,
 					t_lengths *lengths, int diff);
 void			ft_print_positive(char *str_from_arg, t_format *format,

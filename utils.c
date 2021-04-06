@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:41:24 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/03/31 18:47:55 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 13:42:58 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,8 @@ char	*ft_itoa_base(unsigned long long n, unsigned long long base)
 	if (!str)
 		return (NULL);
 	str[length] = '\0';
+	if (n == 0)
+		str[0] = '0';
 	while (n != 0)
 	{
 		remainder = n % base;

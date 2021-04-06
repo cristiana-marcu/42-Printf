@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:55:22 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/05 17:23:59 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 12:56:00 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_lengths *lengths, int diff)
 				&& format->p_has_changed)
 				write(1, " ", 1);
 		}
-		//else if (format->width == lengths->arg_length && )
 	}
 	else
 	{
@@ -71,7 +70,7 @@ t_lengths *lengths, int diff)
 	if ((format->p_has_changed && format->precision != 0)
 		|| str_from_arg[0] != '0')
 	{
-		if (str_from_arg[0] == '0' && format->precision == 1
+		if (str_from_arg[0] == '0' && (format->precision == 1 || format->precision < 0)
 			&& format->p_has_changed && !format->flag_zero)
 			return ;
 		else
@@ -82,17 +81,25 @@ t_lengths *lengths, int diff)
 void	di_handle_width_flagzero(char *str_from_arg, t_format *format,
 t_lengths *lengths)
 {
+	int abs_prec;
+
+	abs_prec = ft_math_abs(format->precision);
 	if (str_from_arg[0] == '0' && format->precision == 0)
 		ft_putnchar(' ', lengths->res_length);
-	else if (format->precision == 0 || (format->precision <= lengths->arg_length
+	else if (format->precision == 0 || (abs_prec <= lengths->arg_length
 			&& format->p_has_changed))
 		ft_putnchar(' ', lengths->res_length - lengths->arg_length);
-	else if (format->precision > lengths->arg_length || !format->p_has_changed)
+	else if (abs_prec > lengths->arg_length || !format->p_has_changed)
 	{
 		ft_putnchar('0', lengths->res_length - lengths->arg_length);
-		if (str_from_arg[0] == '0' && format->precision != 0)
+		if (str_from_arg[0] == '0' && format->precision != 0 && format->precision > 0)
 			write(1, "0", 1);
 	}
+}
+
+int	ft_math_abs(int precision)
+{
+	return (precision * -1);
 }
 
 int	get_diff(t_format *format, t_lengths *lengths, char *str_from_arg)

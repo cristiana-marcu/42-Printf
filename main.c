@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/05 18:00:43 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 13:33:46 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,9 +35,9 @@ int	main()
 	// static unsigned long long a10;
 	// static char *a11;
 	// static void *a12;
-	// int		mine;
-	// int		official;
-	// mine = ft_printf("|%p|\n", NULL);
+	int		mine;
+	int		official;
+	//mine = ft_printf("|%p|\n", NULL);
 	// official = printf("|%p|\n", NULL);
 	// ft_printf("My length: %d\n", mine);
 	// printf("Her length: %d\n", official);
@@ -76,13 +76,18 @@ int	main()
 	char	*t = "0x12345678";
 	char	*u = "-0";
 
-	a = 4;
-	b = 3;
-	ft_printf("%*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s|\n", a, b, n, a, b, o, a, b, p, a, b, q, a, b, r, a, b, s, a, b, t, a, b, u);
-	printf("%*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s, %*.*s|\n", a, b, n, a, b, o, a, b, p, a, b, q, a, b, r, a, b, s, a, b, t, a, b, u);
+	a = 2;
+	b = -1;
+	//ft_printf("%%, 	, \, \", \', +");
+	//printf("%%, 	, \, \", \', +");
 
-	ft_printf("%-1.0d, %-1.0d, %-1.0d, %-1.0d, %-1.0d\n", l, m, c, e, d);
-	printf("%-1.0d, %-1.0d, %-1.0d, %-1.0d, %-1.0d\n", l, m, c, e, d);
+	mine = ft_printf("%*p, %*x\n", a, NULL, a, 0);
+	official = printf("%*p, %*x\n", a, NULL, a, 0);
+	ft_printf("My length: %d\n", mine);
+	printf("Her length: %d\n", official);
+
+	ft_printf("%*i, %*d, %*d, %*d, %*d, %*d, %*d, %*d\n", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
+	printf("%*i, %*d, %*d, %*d, %*d, %*d, %*d, %*d\n", a, i, a, j, a, k, a, l, a, m, a, c, a, e, a, d);
 
 	/*char *s = "asd";
 	char **p = &s;*/

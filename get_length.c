@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:46:36 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/04 13:55:34 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 13:27:17 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,8 +110,8 @@ int	ft_get_unsigned_length(char *str_from_arg, t_format *format)
 		format->flag_minus = 1;
 		format->width *= -1;
 	}
-	if (format->precision < 0)
-		length = 1;
+	/*if (format->precision < 0)
+		length = 1;*/
 	if (format->precision >= format->width && format->p_has_changed)
 	{
 		if (format->precision >= length)

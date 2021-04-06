@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:00:02 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/05 14:18:16 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 11:47:31 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	*ft_arg_to_string(va_list *vl, t_format *format)
 	else if (format->specifier == 'c')
 		str_from_arg = ft_handle_c(vl);
 	else if (format->specifier == '%')
-		str_from_arg = "%";
+		str_from_arg = ft_strdup("%");
 	else if (format->specifier == 'p')
 		str_from_arg = ft_handle_p(vl);
 	else if (format->specifier == 'd' || format->specifier == 'i')

@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:52:40 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/05 17:56:20 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/06 10:38:25 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ t_lengths *lengths)
 	if ((format->precision < format->width && format->p_has_changed)
 		|| lengths->res_length < lengths->arg_length)
 	{
-		printf("hellooooooo %s\n", str_from_arg);
+		//printf("hellooooooo %s\n", str_from_arg);
 		temp = ft_substr(str_from_arg, 0, (size_t)format->precision);
 		str_from_arg = temp;
 		//free(temp);
