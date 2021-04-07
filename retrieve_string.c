@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 19:00:02 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/06 17:29:19 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/07 12:45:08 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,10 @@ char	*ft_arg_to_string(va_list *vl, t_format *format)
 char	*ft_handle_c(va_list *vl)
 {
 	char	*str;
-	char	*temp;
 
-	temp = (char *)malloc(2 * sizeof(char));
-	if (!temp)
+	str = (char *)malloc(2 * sizeof(char));
+	if (!str)
 		return (NULL);
-	str = temp;
-	//free(temp);
 	str[0] = va_arg(*vl, int);
 	str[1] = '\0';
 	return (str);
@@ -65,25 +62,19 @@ char	*ft_handle_s(va_list *vl)
 char	*ft_handle_p(va_list *vl)
 {
 	char				*str;
-	char				*temp;
 	unsigned long long	arg;
 
 	arg = (unsigned long long)va_arg(*vl, void *);
-	temp = ft_itoa_base(arg, 16);
-	str = temp;
-	//free(temp);
+	str = ft_itoa_base(arg, 16);
 	return (str);
 }
 
 char	*ft_handle_di(va_list *vl)
 {
 	char				*str;
-	char				*temp;
 	unsigned long long	arg;
 
 	arg = (long long)va_arg(*vl, int);
-	temp = ft_itoa(arg);
-	str = temp;
-	//free(temp);
+	str = ft_itoa(arg);
 	return (str);
 }

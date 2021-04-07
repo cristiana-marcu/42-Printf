@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/01/25 13:22:06 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/01/27 15:22:47 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/07 12:54:43 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_strchr(const char *s, int c)
 	while (a <= length)
 	{
 		if (s[a] == (char)c)
-			return ((char*)(s + a));
+			return ((char *)(s + a));
 		a++;
 	}
 	return (NULL);

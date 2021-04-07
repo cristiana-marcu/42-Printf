@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 13:42:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/05 14:20:25 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/07 12:47:35 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ const char *str)
 			ft_init_format(format);
 			i += ft_check_formatters(vl, (char *)str, i, format);
 			str_from_arg = ft_arg_to_string(vl, format);
-			ft_init_lengths(lengths, str_from_arg, format);
 			ft_print_arg(str_from_arg, format, lengths);
 			free(str_from_arg);
 			result += lengths->res_length;
@@ -77,6 +76,7 @@ int	ft_get_length(char *str_from_arg, t_format *format)
 
 void	ft_print_arg(char *str_from_arg, t_format *format, t_lengths *lengths)
 {
+	ft_init_lengths(lengths, str_from_arg, format);
 	if (format->specifier == 's')
 		ft_print_string(str_from_arg, format, lengths);
 	else if (format->specifier == 'c' || format->specifier == '%')

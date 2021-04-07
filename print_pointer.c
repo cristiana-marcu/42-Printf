@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:54:14 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/06 17:59:33 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/07 12:49:50 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ t_lengths *lengths)
 	else if (format->flag_zero)
 	{
 		ft_putnchar('0', lengths->res_length - format->precision
-		- lengths->arg_length);
+			- lengths->arg_length);
 		print_address(format, lengths, str_from_arg);
 	}
 	else
@@ -54,7 +54,8 @@ void	print_address(t_format *format, t_lengths *lengths, char *str)
 		ft_putstr_fd(str, 1);
 }
 
-void	spaces_to_print(t_format *format, t_lengths *lengths, char *str_from_arg)
+void	spaces_to_print(t_format *format, t_lengths *lengths,
+char *str_from_arg)
 {
 	if (format->width > lengths->arg_length && (lengths->arg_length != 0
 			|| format->precision == 0))
