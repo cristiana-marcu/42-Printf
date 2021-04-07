@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/02/16 12:44:55 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/06 19:26:50 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/07 12:07:45 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ int	main()
 	char	*u = "-0";
 
 	a = 3;
-	b = 1;
+	b = -1;
 	// mine = ft_printf("%.p|\n", NULL);
 	// official = printf("%.p|\n", NULL);
 
@@ -86,8 +86,8 @@ int	main()
 	// ft_printf("My length: %d\n", mine);
 	// printf("Her length: %d\n", official);
 
-	ft_printf("%0*.*d, %0*.*d, %0*.*d\n", a, b, c, a, b, e, a, b, d);
-	printf("%0*.*d, %0*.*d, %0*.*d\n", a, b, c, a, b, e, a, b, d);
+	ft_printf("%04.*d\n", -1, -1);
+	printf("%04.*d\n", -1, -1);
 
 	/*char *s = "asd";
 	char **p = &s;*/

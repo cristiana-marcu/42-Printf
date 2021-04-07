@@ -6,7 +6,7 @@
 /*   By: cmarcu <cmarcu@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/03/31 18:55:22 by cmarcu            #+#    #+#             */
-/*   Updated: 2021/04/06 19:27:48 by cmarcu           ###   ########.fr       */
+/*   Updated: 2021/04/07 12:23:38 by cmarcu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ t_lengths *lengths)
 	if (str_from_arg[0] == '0' && format->precision == 0)
 		ft_putnchar(' ', lengths->res_length);
 	else if (format->precision == 0 || (abs_prec < lengths->arg_length
-			&& format->p_has_changed))
+			&& format->p_has_changed && format->precision > 0))
 		ft_putnchar(' ', lengths->res_length - lengths->arg_length);
 	else if (abs_prec > lengths->arg_length || !format->p_has_changed
 		|| format->precision < 0 || format->width > lengths->arg_length)
